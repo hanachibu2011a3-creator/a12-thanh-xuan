@@ -129,6 +129,30 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
   100% { box-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 30px 80px rgba(0,0,0,1); }
 }
 
+/* HOLOGRAPHIC TRADING CARD SHINE */
+.mf::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 20%, rgba(255,215,0,0.15) 35%, rgba(0,240,255,0.2) 50%, rgba(255,42,95,0.15) 65%, transparent 80%);
+  background-size: 200% 200%;
+  animation: holoFoil 4s infinite linear;
+  mix-blend-mode: color-dodge;
+  opacity: 0.7;
+}
+@keyframes holoFoil {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 200%; }
+}
+
+/* GEN Z STATS PILLS */
+.card-stats {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 14px;
+}
+.stat-pill {
+  padding: 4px 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 20px; font-size: 10px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase;
+  font-family: monospace; backdrop-filter: blur(5px);
+}
+
 /* Scale-bounce entrance for modal image */
 #modal.open .mi {
   animation: modalBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -138,6 +162,63 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
   60%  { transform: scale(1.03); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* CYBER HUD OVERLAY */
+#cyber-hud {
+  position: fixed; inset: 0; pointer-events: none; z-index: 180;
+  font-family: monospace, 'Courier New', sans-serif;
+  font-size: 10px; letter-spacing: 1.5px; color: rgba(201, 168, 76, 0.6);
+  text-transform: uppercase; transition: opacity .6s;
+}
+.hud-corner {
+  position: absolute; display: flex; align-items: center; gap: 8px;
+  background: rgba(14, 10, 7, 0.4); padding: 5px 10px; border-radius: 4px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+.hud-tl { top: 75px; left: 24px; }
+.hud-tr { top: 22px; right: 24px; color: #ff5555; }
+.hud-tr .rec-dot { width: 7px; height: 7px; border-radius: 50%; background: #ff4444; animation: recBlink 1s infinite alternate; }
+.hud-bl { bottom: 65px; left: 24px; }
+.hud-br { bottom: 24px; right: 24px; color: var(--gold); }
+@keyframes recBlink { 0% { opacity: 0.2; } 100% { opacity: 1; } }
+.view-grid #cyber-hud { opacity: 0; pointer-events: none; }
+
+/* STREETWEAR STICKERS FOR GRID VIEW */
+.gv-item { overflow: visible !important; }
+.gv-sticker {
+  position: absolute; z-index: 5; pointer-events: none;
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  padding: 3px 8px; border-radius: 3px; text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+}
+.gv-item:hover .gv-sticker { transform: scale(1.1) rotate(0deg) !important; }
+.stk-gold {
+  bottom: 8px; left: 8px;
+  background: linear-gradient(135deg, #ffd700, #e8a838);
+  color: #0e0a07; transform: rotate(-4deg);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.stk-tape {
+  top: -8px; left: 16px;
+  background: rgba(255, 255, 255, 0.85); color: #111;
+  transform: rotate(3deg); font-family: monospace;
+  border-left: 2px dashed #ff4444; border-right: 2px dashed #ff4444;
+}
+.stk-hype {
+  bottom: 8px; right: 8px;
+  background: #ff2a5f; color: #fff;
+  transform: rotate(-6deg);
+  box-shadow: 0 0 15px rgba(255, 42, 95, 0.4);
+}
+.stk-cyan {
+  top: 10px; left: 8px;
+  background: #00f0ff; color: #050507;
+  transform: rotate(-3deg);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+}
+
 
 /* GRID VIEW (2D) */
 .view-grid body::after {
@@ -277,6 +358,13 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
     <div class="pt"><div id="pf"></div></div>
     <div id="ptxt">0% — Khởi đầu</div>
   </div>
+  <!-- CYBER HUD -->
+  <div id="cyber-hud">
+    <div class="hud-corner hud-tl"><span>SYS // A12_CHRONICLE_OS</span></div>
+    <div class="hud-corner hud-tr"><span class="rec-dot"></span><span>REC ● 4K 60FPS</span></div>
+    <div class="hud-corner hud-bl"><span>COORD: 20°00'N 105°18'E [LAM KINH]</span></div>
+    <div class="hud-corner hud-br"><span>EXP: 2025-2028 // RỰC RỠ 100%</span></div>
+  </div>
 </div>
 
 <div id="grid-view"></div>
@@ -291,6 +379,7 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
     <div class="mc" id="mcap"></div>
     <div class="ms" id="msub"></div>
     <div class="mtag" id="mtag"></div>
+    <div class="card-stats" id="mstats"></div>
   </div>
 </div>
 
@@ -670,6 +759,19 @@ function startScene(FD) {
     document.getElementById('mcap').innerText = fd.meta.cap;
     document.getElementById('msub').innerText = fd.meta.sub;
     document.getElementById('mtag').innerText = fd.meta.tag;
+
+    // Gen Z Holographic Stats Pills
+    const mstats = document.getElementById('mstats');
+    if(fd.type === 'video') {
+      mstats.innerHTML = '<span class="stat-pill">★ CHẤT LƯỢNG: 4K 60FPS</span><span class="stat-pill">⚡ ĐỘ SỐNG ĐỘNG: 100%</span><span class="stat-pill">🎬 THỂ LOẠI: CINEMATIC</span>';
+    } else if(fd.meta.cat === 'achievement') {
+      mstats.innerHTML = '<span class="stat-pill">🏆 HỌC LỰC: XUẤT SẮC</span><span class="stat-pill">⚔️ CHIẾN THẦN HỌC TẬP</span><span class="stat-pill">★ RANK: TOP TIER A12</span>';
+    } else if(fd.meta.cat === 'study') {
+      mstats.innerHTML = '<span class="stat-pill">🍗 SỨC CHIẾN ĐẤU: 999/100</span><span class="stat-pill">🔥 ĐỘ ĐOÀN KẾT: VÔ CỰC</span><span class="stat-pill">🍖 DỰ TOÁN: SẠCH ĐĨA</span>';
+    } else {
+      mstats.innerHTML = '<span class="stat-pill">✨ THANH XUÂN: RỰC RỠ</span><span class="stat-pill">📸 GÓC NHÌN: KỶ NIỆM</span><span class="stat-pill">❤️ ĐỘ THÂN THIẾT: 100%</span>';
+    }
+
     document.getElementById('modal').classList.add('open');
   };
   window.closeM = () => { document.getElementById('modal').classList.remove('open'); document.getElementById('mvid').pause(); };
@@ -824,11 +926,13 @@ function startScene(FD) {
       cam.position.y += (-mouse.y * 1.5 - cam.position.y) * 0.05;
       cam.lookAt(cam.position.x, cam.position.y, cam.position.z - 10);
       
-      // Particles breathe with music
+      // Warp Speed / Hyperdrive scroll velocity effect
+      const scrollVel = Math.abs(tZ - cZ);
+      const warpZ = 1 + Math.min(scrollVel * 0.25, 4); // stretch particles up to 5x on Z
       const breathScale = 1 + bass * 0.05;
-      points.scale.setScalar(breathScale);
+      points.scale.set(breathScale, breathScale, breathScale * warpZ);
       points.rotation.y = t * 0.0001;
-      pm.opacity = 0.4 + bass * 0.3; // particles glow brighter on bass
+      pm.opacity = (0.4 + bass * 0.3) + Math.min(scrollVel * 0.03, 0.4); // glow brighter when warping
 
       fms.forEach((f, i) => {
         if(f.userData._inFinale && f.userData._finTarget) {
@@ -891,15 +995,25 @@ function renderGrid() {
       <div class="gv-tit">${sec.title}</div>
       <div class="gv-sub">${sec.sub}</div>
       <div class="gv-grid">`;
-    sec.arr.forEach((item) => {
+    sec.arr.forEach((item, idx) => {
       const d = JSON.stringify({src:item.src, type:item.t, meta:item.m}).replace(/"/g, '&quot;');
+      let stickerHtml = '';
+      if(sec.id === 'achievement' && idx % 3 === 0) {
+        stickerHtml = '<div class="gv-sticker stk-gold">★ TOP TIER A12 ★</div>';
+      } else if(sec.id === 'study' && idx % 2 === 0) {
+        stickerHtml = '<div class="gv-sticker stk-tape">OÁNH CHÉN 100%</div>';
+      } else if(sec.id === 'trip' && idx % 4 === 1) {
+        stickerHtml = '<div class="gv-sticker stk-hype">VERIFIED A12</div>';
+      } else if(idx % 5 === 2) {
+        stickerHtml = '<div class="gv-sticker stk-cyan">LEGEND 2026</div>';
+      }
       html += `<div class="gv-item" onclick="window.openM(${d})">`;
       if(item.t==='video') {
          html += `<video src="${item.src}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="gv-ibadge">▶ Video</div>`;
       } else {
          html += `<img loading="lazy" src="${item.src}">`;
       }
-      html += `</div>`;
+      html += stickerHtml + `</div>`;
     });
     html += `</div></div>`;
   });
