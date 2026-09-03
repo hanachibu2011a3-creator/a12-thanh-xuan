@@ -56,6 +56,10 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 .hcta.glass:hover{border-color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);box-shadow:0 10px 30px rgba(255,255,255,0.12);}
 .hcta span.icon{font-size:24px;}
 .hcta small{font-size:9.5px;opacity:0.65;letter-spacing:0.5px;text-transform:none;font-style:italic;}
+.hero-music-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);border-radius:30px;color:var(--gold);font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;pointer-events:all;transition:all .3s ease;margin-top:14px;}
+.hero-music-pill:hover{background:rgba(201,168,76,0.25);transform:scale(1.05);box-shadow:0 0 20px rgba(201,168,76,0.3);}
+.hero-music-pill.playing{background:rgba(201,168,76,0.3);border-color:var(--amber);box-shadow:0 0 15px rgba(201,168,76,0.4);animation:musicPulse 2s infinite ease-in-out;}
+@keyframes musicPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.04);box-shadow:0 0 25px rgba(201,168,76,0.6);}}
 .hsh{position:absolute;bottom:35px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:2px;color:var(--soft);animation:bob 2s ease-in-out infinite;}
 .sl{width:1px;height:36px;background:linear-gradient(to bottom,transparent,var(--gold));}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
@@ -235,6 +239,9 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
       <small>Lớp 10 học kỳ II (2026)</small>
     </a>
   </div>
+  <button id="hero-mbtn" class="hero-music-pill" onclick="togMusic()">
+    <span>🎵 Bật nhạc nền</span>
+  </button>
   <div class="hsh" style="pointer-events:none;"><div class="sl"></div><span>Hãy bắt đầu</span></div>
 </div>
 
@@ -690,25 +697,68 @@ function startScene(FD) {
   let audioCtx, analyser, freqData;
   window.togMusic = () => {
     const a = document.getElementById('bg-audio');
-    mOn = !mOn;
-    if(mOn) {
-      a.play();
-      // Setup Web Audio analyser once
-      if(!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const src = audioCtx.createMediaElementSource(a);
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 256;
-        freqData = new Uint8Array(analyser.frequencyBinCount);
-        src.connect(analyser);
-        analyser.connect(audioCtx.destination);
+    if(!a) return;
+    
+    // Toggle state
+    if(!mOn) {
+      // Lazy init Web Audio
+      try {
+        if(!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if(AudioContext) {
+            audioCtx = new AudioContext();
+            a.crossOrigin = 'anonymous';
+            const src = audioCtx.createMediaElementSource(a);
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            freqData = new Uint8Array(analyser.frequencyBinCount);
+            src.connect(analyser);
+            analyser.connect(audioCtx.destination);
+          }
+        }
+        if(audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      } catch(err) {
+        console.warn('Web Audio error, fallback to direct audio play:', err);
+      }
+
+      const playPromise = a.play();
+      if(playPromise !== undefined) {
+        playPromise.then(() => {
+          mOn = true;
+          updateMusicUI(true);
+        }).catch(err => {
+          console.warn('Autoplay prevented or audio error:', err);
+          mOn = false;
+          updateMusicUI(false);
+        });
       }
     } else {
       a.pause();
+      mOn = false;
+      updateMusicUI(false);
     }
-    document.getElementById('micon').innerText = mOn ? '🔊' : '🔇';
-    document.getElementById('mlbl').innerText = mOn ? 'Tắt nhạc' : 'Bật nhạc';
   };
+
+  function updateMusicUI(active) {
+    const icon = document.getElementById('micon');
+    const lbl = document.getElementById('mlbl');
+    if(icon) icon.innerText = active ? '🔊' : '🔇';
+    if(lbl) lbl.innerText = active ? 'Tắt nhạc' : 'Bật nhạc';
+    const heroMBtn = document.getElementById('hero-mbtn');
+    if(heroMBtn) {
+      heroMBtn.classList.toggle('playing', active);
+      heroMBtn.innerHTML = active ? '<span>🔊 Nhạc đang phát</span>' : '<span>🎵 Bật nhạc nền</span>';
+    }
+  }
+
+  // Fallback direct click on document if first interaction
+  document.addEventListener('click', function unlockAudio() {
+    if(audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }, { once: true });
 
   // Generate "A12" mosaic positions for N frames
   function genA12Grid(count) {
