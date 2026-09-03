@@ -532,6 +532,17 @@ function startScene(FD) {
     return new THREE.CanvasTexture(c);
   }
 
+  // Ghost chapter text — giant 3D billboard
+  function mkGhostText(label) {
+    const c = document.createElement('canvas'); c.width = 2048; c.height = 512;
+    const ctx = c.getContext('2d');
+    ctx.font = '900 280px "Playfair Display"';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(201,168,76,0.4)';
+    ctx.fillText(label, 1024, 256);
+    return new THREE.CanvasTexture(c);
+  }
+
   const fms = FD.map(fd => {
     const grp = new THREE.Group();
     const w = 4, h = 3;
@@ -572,6 +583,17 @@ function startScene(FD) {
     grp.userData = fd;
     fg.add(grp);
     return grp;
+  });
+
+  // Ghost chapter labels floating in 3D space
+  CH_DEFS.forEach((ch, i) => {
+    if(i === 0 || i === CH_DEFS.length - 1) return; // skip prologue & finale
+    const tex = mkGhostText(ch.l);
+    const ghostMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.08, side: THREE.DoubleSide, depthWrite: false });
+    const ghost = new THREE.Mesh(new THREE.PlaneGeometry(25, 6), ghostMat);
+    ghost.position.set(0, 0, ch.z - 5);
+    ghost.rotation.y = (i % 2 === 0) ? 0.05 : -0.05; // slight angle alternating
+    scene.add(ghost);
   });
 
   // Events
@@ -656,22 +678,52 @@ function startScene(FD) {
   window.randomMem = () => jumpCh(Math.floor(Math.random()*(CH_DEFS.length-1)));
 
   let mOn = false;
+  let audioCtx, analyser, freqData;
   window.togMusic = () => {
     const a = document.getElementById('bg-audio');
-    mOn = !mOn; if(mOn) a.play(); else a.pause();
+    mOn = !mOn;
+    if(mOn) {
+      a.play();
+      // Setup Web Audio analyser once
+      if(!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const src = audioCtx.createMediaElementSource(a);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        freqData = new Uint8Array(analyser.frequencyBinCount);
+        src.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      }
+    } else {
+      a.pause();
+    }
     document.getElementById('micon').innerText = mOn ? '🔊' : '🔇';
     document.getElementById('mlbl').innerText = mOn ? 'Tắt nhạc' : 'Bật nhạc';
   };
 
   function animate(t) {
     if(!document.body.classList.contains('view-grid')) {
+      // Audio-reactive "breathing"
+      let bass = 0;
+      if(analyser && mOn) {
+        analyser.getByteFrequencyData(freqData);
+        // Average of first 8 bins = bass energy (0-255)
+        for(let i = 0; i < 8; i++) bass += freqData[i];
+        bass = (bass / 8) / 255; // normalize to 0-1
+      }
+
       cZ += (tZ - cZ) * 0.08;
-      cam.position.z = cZ;
+      cam.position.z = cZ + bass * 0.15; // micro camera push on bass
       cam.position.x += (mouse.x * 2 - cam.position.x) * 0.05;
       cam.position.y += (-mouse.y * 1.5 - cam.position.y) * 0.05;
       cam.lookAt(cam.position.x, cam.position.y, cam.position.z - 10);
       
+      // Particles breathe with music
+      const breathScale = 1 + bass * 0.05;
+      points.scale.setScalar(breathScale);
       points.rotation.y = t * 0.0001;
+      pm.opacity = 0.4 + bass * 0.3; // particles glow brighter on bass
+
       fms.forEach((f, i) => {
         f.position.y += Math.sin(t * 0.001 + i) * 0.002;
         f.rotation.z += Math.cos(t * 0.0008 + i) * 0.0001;
