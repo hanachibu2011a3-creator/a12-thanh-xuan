@@ -199,6 +199,24 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 }
 .mx:hover{color:#0e0a07;background:#ffffff;}
 
+/* MODAL NAV ARROWS (PREV / NEXT) */
+.m-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  background: rgba(14,10,7,0.75); border: 1px solid rgba(255,255,255,0.2);
+  color: #ffffff; font-size: 20px; cursor: pointer; pointer-events: all;
+  transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); z-index: 310;
+  backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+}
+.m-arrow:hover { background: #ffffff; color: #0e0a07; border-color: #ffffff; transform: translateY(-50%) scale(1.08); }
+.m-prev { left: 24px; }
+.m-next { right: 24px; }
+@media (max-width: 768px) {
+  .m-arrow { width: 40px; height: 40px; font-size: 16px; }
+  .m-prev { left: 10px; }
+  .m-next { right: 10px; }
+}
+
 /* SHUTTER FLASH EFFECT */
 #shutter-flash {
   position: fixed; inset: 0; z-index: 299;
@@ -393,9 +411,32 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 .fb:hover,.fb.p{background:#ffffff;color:#0e0a07;box-shadow: 0 0 25px rgba(255,255,255,.3);}
 
 @media (max-width: 768px) {
-  #rc { top: auto; bottom: 85px; right: 20px; flex-direction: row; flex-wrap: wrap; width: 100%; justify-content: flex-end; padding-right: 40px;}
-  #bp { bottom: 130px; }
-  .btn { padding: 6px 12px; font-size: 11px; }
+  #topbar { padding: 14px 18px; }
+  .tl { font-size: 13px; }
+  .tt { font-size: 8.5px; }
+  #rc {
+    top: auto; bottom: 20px; right: 0; left: 0;
+    flex-direction: row; flex-wrap: nowrap; width: 100%;
+    justify-content: center; gap: 6px; padding: 0 10px;
+    z-index: 210;
+  }
+  .btn {
+    padding: 8px 12px; font-size: 10px;
+    background: rgba(10,8,6,0.92); border-color: rgba(255,255,255,0.25);
+  }
+  #bp { bottom: 75px; left: 16px; }
+  #cnav {
+    right: 16px; left: 16px; top: auto; bottom: 80px;
+    min-width: unset; width: auto; max-height: 55vh; overflow-y: auto;
+  }
+  .hud-tl { top: 60px; left: 14px; font-size: 8.5px; }
+  .hud-tr { top: 16px; right: 14px; font-size: 8.5px; }
+  .hud-bl { bottom: 100px; left: 14px; font-size: 8.5px; }
+  .hud-br { display: none; }
+  .hh { font-size: clamp(30px, 9vw, 48px); }
+  .swiss-badge { font-size: 9.5px; padding: 4px 10px; letter-spacing: 1.5px; }
+  .hsub { font-size: 13px; margin-bottom: 24px; }
+  .hcta { width: 100%; max-width: 320px; }
 }
 </style>
 </head>
@@ -490,6 +531,8 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 <div id="grid-view"></div>
 
 <div id="modal" onclick="if(event.target===this)closeM()">
+  <div class="m-arrow m-prev" onclick="event.stopPropagation();navM(-1)">‹</div>
+  <div class="m-arrow m-next" onclick="event.stopPropagation();navM(1)">›</div>
   <div class="mi">
     <div class="mx" onclick="closeM()">✕ Đóng (ESC)</div>
     <div class="mf">
@@ -894,8 +937,56 @@ function startScene(FD) {
 
     document.getElementById('modal').classList.add('open');
   };
+
+  let curFdList = FD;
+  let curFdIdx = 0;
+  const _origOpenM = window.openM;
+  window.openM = function(fd) {
+    if(Array.isArray(fd._list)) {
+      curFdList = fd._list;
+      curFdIdx = fd._idx || 0;
+    } else {
+      const foundIdx = FD.findIndex(f => f.src === fd.src);
+      curFdList = FD;
+      curFdIdx = foundIdx >= 0 ? foundIdx : 0;
+    }
+    _origOpenM(fd);
+  };
+
+  window.navM = function(dir) {
+    if(!curFdList || !curFdList.length) return;
+    curFdIdx = (curFdIdx + dir + curFdList.length) % curFdList.length;
+    const targetItem = curFdList[curFdIdx];
+    _origOpenM(targetItem);
+  };
+
+  window.openGridM = function(list, idx) {
+    if(!list || !list[idx]) return;
+    const item = list[idx];
+    item._list = list;
+    item._idx = idx;
+    window.openM(item);
+  };
+
   window.closeM = () => { document.getElementById('modal').classList.remove('open'); document.getElementById('mvid').pause(); };
-  window.addEventListener('keydown', e => { if(e.key==='Escape') closeM(); });
+  window.addEventListener('keydown', e => {
+    if(e.key === 'Escape') closeM();
+    if(document.getElementById('modal').classList.contains('open')) {
+      if(e.key === 'ArrowLeft') navM(-1);
+      if(e.key === 'ArrowRight') navM(1);
+    }
+  });
+
+  // Touch Swipe for mobile Lightbox
+  let touchStartX = 0;
+  const modalEl = document.getElementById('modal');
+  modalEl.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive:true});
+  modalEl.addEventListener('touchend', e => {
+    const diff = e.changedTouches[0].screenX - touchStartX;
+    if(Math.abs(diff) > 50) {
+      navM(diff > 0 ? -1 : 1);
+    }
+  }, {passive:true});
 
   window.jumpCh = (i) => {
     const c = CH_DEFS[i];
@@ -1115,8 +1206,9 @@ function renderGrid() {
       <div class="gv-tit">${sec.title}</div>
       <div class="gv-sub">${sec.sub}</div>
       <div class="gv-grid">`;
+    const secList = sec.arr.map(it => ({src: it.src, type: it.t, meta: it.m}));
     sec.arr.forEach((item, idx) => {
-      const d = JSON.stringify({src:item.src, type:item.t, meta:item.m}).replace(/"/g, '&quot;');
+      const d = JSON.stringify({src:item.src, type:item.t, meta:item.m, _idx: idx}).replace(/"/g, '&quot;');
       let stickerHtml = '';
       if(sec.id === 'achievement' && idx % 3 === 0) {
         stickerHtml = '<div class="gv-sticker stk-gold">★ TOP TIER A12 ★</div>';
@@ -1127,7 +1219,7 @@ function renderGrid() {
       } else if(idx % 5 === 2) {
         stickerHtml = '<div class="gv-sticker stk-cyan">LEGEND 2026</div>';
       }
-      html += `<div class="gv-item" onclick="window.openM(${d})">`;
+      html += `<div class="gv-item" onclick="openGridM(${sec.id}_list, ${idx})">`;
       if(item.t==='video') {
          html += `<video src="${item.src}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="gv-ibadge">▶ Video</div>`;
       } else {
@@ -1135,6 +1227,7 @@ function renderGrid() {
       }
       html += stickerHtml + `</div>`;
     });
+    window[sec.id + '_list'] = secList;
     html += `</div></div>`;
   });
   
