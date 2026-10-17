@@ -658,6 +658,52 @@ const B_VID = 'Video/';
 // Categorization Logic
 function getMediaMeta(name) {
   const n = name.toLowerCase();
+
+  // 09_Trung Thu_2026
+  if(n.includes('09_trung thu')){
+    const isVid = n.endsWith('.mp4');
+    return {
+      type: isVid ? 'video' : 'img',
+      cat: 'trungthu',
+      cap: isVid ? 'Clip Đêm Hội Trăng Rằm 2026' : 'Đêm Hội Trung Thu 2026',
+      sub: 'Rước đèn, phá cỗ rộn rã tiếng cười của đại gia đình A12',
+      tag: '#TrungThu2026'
+    };
+  }
+
+  // 10_ Van Nghe_2026
+  if(n.includes('10_ van nghe') || n.includes('10_van nghe')){
+    const isVid = n.endsWith('.mp4');
+    return {
+      type: isVid ? 'video' : 'img',
+      cat: 'vannghe',
+      cap: isVid ? 'Tiết Mục Văn Nghệ Tỏa Sáng' : 'Hội Diễn Văn Nghệ 2026',
+      sub: 'Cháy hết mình trên sân khấu tuổi trẻ THPT Lê Quý Đôn',
+      tag: '#VanNgheA12'
+    };
+  }
+
+  // 11_Lien Hoan giua ky_2026
+  if(n.includes('11_lien hoan')){
+    return {
+      type: 'img',
+      cat: 'lienhoan',
+      cap: 'Đại Tiệc Liên Hoan Giữa Kỳ 2026',
+      sub: 'Nạp năng lượng, quẩy hết nấc cùng bạn bè thân thương',
+      tag: '#LienHoanA12'
+    };
+  }
+
+  // 12_hoat dong ngoai khoa 2026
+  if(n.includes('12_hoat dong')){
+    return {
+      type: 'img',
+      cat: 'ngoaikhoa',
+      cap: 'Hoạt Động Ngoại Khóa Thực Tế 2026',
+      sub: 'Trải nghiệm học tập thực tế và rèn luyện kỹ năng sống',
+      tag: '#NgoaiKhoa2026'
+    };
+  }
   
   // Videos
   if(n.endsWith('.mp4')){
@@ -753,19 +799,58 @@ function getMediaMeta(name) {
 
 const IMGS = [
   'z7668935658461_7516f3dcba6320acf07420bcbd6b9722.jpg','z7668935688406_3e8d295b247fa70159648375c2464810.jpg','z7669012638233_5095501595d354340b12b8311f260f63.jpg','z7669479491178_03709587105a7d6dae6a62c3256ad592.jpg','z7669479496221_2beb1327fcc2c8568bebabd21baf1fbd.jpg','z7669479501700_1fa056bb8ca0c45e7c4986eb98e1804e.jpg','z7669479501706_56fafa0db040049a68913eb3a8c56c74.jpg','z7669479509652_4c2d5af04deb7a7980cae0acb2274873.jpg','z7669479512055_cf31ab141c0e863b2503b4f7a96f47fa.jpg','z7669479913281_74907f3b737bdcdd36ffc70e5140023b.jpg','z7669479915955_b86a802f448923056af3aaa0f896068e.jpg','z7669479918401_4e2a908a667a570ab533c9d30be380f1.jpg','z7669479922495_852a306b9884a074be8305f7c797cf57.jpg','z7669479930626_a750fbb35a4919e7dc3b40654577a2df.jpg','z7669479939933_a9ecb316dac16ad0d266c37094dd349e.jpg','z7669479939942_5895f1e139688c8f6d0d9d9fe6283f2c.jpg','z7669945981061_8365004b55f547d533931d5afe3bf228.jpg','z7669946011302_722a2089beb3505a7b045f9c609d3d85.jpg','z7669961294847_5f6a492c3fdf7f6ad2b2a15f9fd12c87.jpg','z7669961314511_2b69707073b1e4601194edacfce0c054.jpg','z7670043817421_766fae0c5e32eec448c2cf17ca7e84f8.jpg','z7670043821781_59e9f60f598c9aca3d7877f9f6bb7eeb.jpg','z7670043827127_05370d08fc2444e8fc829401ee73a9ac.jpg','z7670043833172_d5633befbb876eaa3e8590a3c7685d6b.jpg','z7670043938369_de8ae53c921e8a881425ae8c0dc2fa4a.jpg','z7670057935464_5e6a98d5ad880ee225dda86124b0cb97.jpg','z7670057940947_5db4df8f47e2cfbe55f1bbc429804251.jpg','z7670057946471_972cdd7b7f08b25f17bdfb3e7ea6469c.jpg','z7670057951128_2b8c10c128ebfe8c9f3b0452e91cde53.jpg','z7670103983225_e1825ba05bbee391727ef54c74cbb804.jpg','z7670111197321_256697a3e56a098c3f5ea82283aa1a74.jpg','z7670149074082_8d1cbc6150017248c344899234989858.jpg','z7670180400128_c831f850f4177f164160b9f629e68753.jpg','z7670180412721_bcd56dcb4bb486f19a71fa12c2c6bd7b.jpg','z7670423150216_6c40a0549713ff75a5042d5e007d4005.jpg','z7670423157756_2cbd14e14718a2719491c528884782a6.jpg','z7670423241299_781630c40e0ab349f080443def6b870f.jpg','z7670423349014_b0f6343455e884f119a9532bec5f6c65.jpg','z7670423352481_5e6ab59fbfc0e4792415617cf5ad60b2.jpg','z7670423359246_f4b17fc56e33d650ba25196457175739.jpg','z7670423439191_da44139ec69e2cb2bba786c7dc87ba38.jpg','z7670423453125_ec52016204bbdf072e29690580ccaed6.jpg','z7670423537815_fcb5aa3383b5709500beed230c1b83ec.jpg','z7670423648933_fe5cf0b4b4ee4472a44a46d15ae0a7f3.jpg','z7670423735509_2e85b7bbf979803b33a6b5e0daf8b229.jpg','z7670698712579_fefb9755001928d3364c07ef8c3ebc81.jpg','z7671508740679_b814a6eb955f371bdc705cc0da3134a9.jpg','z7672201479564_2d1eca227e3b1d9ca0ef32dbed684dd3.jpg','z7672201479962_a6a1de64ae6a58bee5882b03355405f5.jpg','z7672201487062_b3004d0f26ed8deee7a956cafe945acc.jpg','z7672201494579_0fb7b7c76d5941fbdb793c3b62278744.jpg','z7672201502238_b4e64e956f97c6c27c5f8e3cff5ac8f4.jpg','z7674335941198_3390097f47777aeb67dcf39251457dea.jpg','z7674335947245_ee89ba343de53028165495cc6b63b41c.jpg','z7674335953630_6a75121878f07986f9d188cb12311223.jpg','z7674335959534_64983c72f55590b507962f338865685a.jpg','z7674335965930_edb65bdf675a243d21aaeb7353942ffa.jpg','z7674335972630_5fd1e7550683db87b68953b425d8eb78.jpg','z7674335980433_e38a73b3f1c7831a3111b06050befd8b.jpg',
-  'Tang Thuong Cuoi Nam/z7854880338745_e791ea074df97c7d91cd5c9eb4827131.jpg','Tang Thuong Cuoi Nam/z7854880346588_3894d5863415e1494bffe40bb142d199.jpg','Tang Thuong Cuoi Nam/z7854880351956_fd723e3b3063373e30b28162ab19b820.jpg','Tang Thuong Cuoi Nam/z7854880355626_504748ca0d8adb5338581d038ff6c110.jpg','Tang Thuong Cuoi Nam/z7854880362478_b36b366b2f37448ae180c8d20709d32f.jpg','Tang Thuong Cuoi Nam/z7854880370612_40215b91dbfe8afe573350106850d6c1.jpg','Tang Thuong Cuoi Nam/z7854880376057_3f7dcf81fe8ccf036b9ffed89a2bbfc1.jpg','Tang Thuong Cuoi Nam/z7854880381635_2325639ae6da86c8c2414a908007646b.jpg','Tang Thuong Cuoi Nam/z7854880389480_c611f0665be2336e0d6e90f6fd5537c5.jpg','Tang Thuong Cuoi Nam/z7854880394751_360bb04a6b69e6fc7172fd39dad0b11b.jpg','Tang Thuong Cuoi Nam/z7854880399174_a34a8f009d02df2d0b403fb42e4f16b3.jpg','Tang Thuong Cuoi Nam/z7854880406861_869f725e6a09021f715dc2d89f1df7f5.jpg','Tang Thuong Cuoi Nam/z7854880414038_709735b85ecd5f09bc808fe04c29135b.jpg','Tang Thuong Cuoi Nam/z7854880420079_e4c96e4fef96a8d96c56758ee3281827.jpg','Tang Thuong Cuoi Nam/z7854880426366_d5cfefc8c68670fc735089ebb12c0fd5.jpg','Tang Thuong Cuoi Nam/z7854880432459_e6a5f0603565f03dbefd88ddd1c2c0de.jpg','Tang Thuong Cuoi Nam/z7854880437908_05413317fb403331a5dd4409bd9f8000.jpg','Tang Thuong Cuoi Nam/z7854880444299_ea06b21698aa869c619e0385ca67098e.jpg','Tang Thuong Cuoi Nam/z7854880451823_c4f9071723c468b7c2f07b88793668e0.jpg','Tang Thuong Cuoi Nam/z7854880457632_7c5d3076fe5e317a6b69db0b5fe06a44.jpg','Tang Thuong Cuoi Nam/z7854880464574_233ada42a28b985e186f7b035b4b2f97.jpg','Tang Thuong Cuoi Nam/z7854880469670_e401454346e5dee13a33fbd74a7f805a.jpg','Tang Thuong Cuoi Nam/z7854880474543_95b093d3611cb75023e48f60fb1f27cc.jpg','Tang Thuong Cuoi Nam/z7854880480848_56757af4cdef5f3c436c5c7183e6cff8.jpg','Tang Thuong Cuoi Nam/z7854880487312_d65d16670859a1d09140a978ee690dc7.jpg','Tang Thuong Cuoi Nam/z7854880495470_40aa55aec416d9df3ff1cbcf24382f10.jpg','Tang Thuong Cuoi Nam/z7854880501158_542a1e7ebf1c93551ec03ebfe668d91f.jpg','Tang Thuong Cuoi Nam/z7854880506459_68e3a3189c3e0abf79c3b00e34923187.jpg','Tang Thuong Cuoi Nam/z7854880514136_dd5a3162b388b306a97a29264f3c89ed.jpg','Tang Thuong Cuoi Nam/z7854880518537_13b9960d7fad02d9353136fc2afbe6b7.jpg','Tang Thuong Cuoi Nam/z7854880527098_1376ceb255fd3bce54536a34473b4512.jpg','Tang Thuong Cuoi Nam/z7854880532115_4ae95501a8cc891b31463ceab19a4f71.jpg','Tang Thuong Cuoi Nam/z7854880538414_17a8bb2f446262e191fdc8b58b6bcc8b.jpg','Tang Thuong Cuoi Nam/z7854880543230_8f4770712a12bd68c3d91c8a589d0bc0.jpg','Tang Thuong Cuoi Nam/z7854880548842_2ff573c38e905c39fc038d748af76900.jpg','Tang Thuong Cuoi Nam/z7854880558315_f1e12c9e7b70b8830e01f58f1b34a086.jpg','Tang Thuong Cuoi Nam/z7854880562020_d8deeb0c727c57b6527ef8144033fc79.jpg','Tang Thuong Cuoi Nam/z7854880570750_f04a6232afc1b36025fd23f0c6fd09ac.jpg'
+  'Tang Thuong Cuoi Nam/z7854880338745_e791ea074df97c7d91cd5c9eb4827131.jpg','Tang Thuong Cuoi Nam/z7854880346588_3894d5863415e1494bffe40bb142d199.jpg','Tang Thuong Cuoi Nam/z7854880351956_fd723e3b3063373e30b28162ab19b820.jpg','Tang Thuong Cuoi Nam/z7854880355626_504748ca0d8adb5338581d038ff6c110.jpg','Tang Thuong Cuoi Nam/z7854880362478_b36b366b2f37448ae180c8d20709d32f.jpg','Tang Thuong Cuoi Nam/z7854880370612_40215b91dbfe8afe573350106850d6c1.jpg','Tang Thuong Cuoi Nam/z7854880376057_3f7dcf81fe8ccf036b9ffed89a2bbfc1.jpg','Tang Thuong Cuoi Nam/z7854880381635_2325639ae6da86c8c2414a908007646b.jpg','Tang Thuong Cuoi Nam/z7854880389480_c611f0665be2336e0d6e90f6fd5537c5.jpg','Tang Thuong Cuoi Nam/z7854880394751_360bb04a6b69e6fc7172fd39dad0b11b.jpg','Tang Thuong Cuoi Nam/z7854880399174_a34a8f009d02df2d0b403fb42e4f16b3.jpg','Tang Thuong Cuoi Nam/z7854880406861_869f725e6a09021f715dc2d89f1df7f5.jpg','Tang Thuong Cuoi Nam/z7854880414038_709735b85ecd5f09bc808fe04c29135b.jpg','Tang Thuong Cuoi Nam/z7854880420079_e4c96e4fef96a8d96c56758ee3281827.jpg','Tang Thuong Cuoi Nam/z7854880426366_d5cfefc8c68670fc735089ebb12c0fd5.jpg','Tang Thuong Cuoi Nam/z7854880432459_e6a5f0603565f03dbefd88ddd1c2c0de.jpg','Tang Thuong Cuoi Nam/z7854880437908_05413317fb403331a5dd4409bd9f8000.jpg','Tang Thuong Cuoi Nam/z7854880444299_ea06b21698aa869c619e0385ca67098e.jpg','Tang Thuong Cuoi Nam/z7854880451823_c4f9071723c468b7c2f07b88793668e0.jpg','Tang Thuong Cuoi Nam/z7854880457632_7c5d3076fe5e317a6b69db0b5fe06a44.jpg','Tang Thuong Cuoi Nam/z7854880464574_233ada42a28b985e186f7b035b4b2f97.jpg','Tang Thuong Cuoi Nam/z7854880469670_e401454346e5dee13a33fbd74a7f805a.jpg','Tang Thuong Cuoi Nam/z7854880474543_95b093d3611cb75023e48f60fb1f27cc.jpg','Tang Thuong Cuoi Nam/z7854880480848_56757af4cdef5f3c436c5c7183e6cff8.jpg','Tang Thuong Cuoi Nam/z7854880487312_d65d16670859a1d09140a978ee690dc7.jpg','Tang Thuong Cuoi Nam/z7854880495470_40aa55aec416d9df3ff1cbcf24382f10.jpg','Tang Thuong Cuoi Nam/z7854880501158_542a1e7ebf1c93551ec03ebfe668d91f.jpg','Tang Thuong Cuoi Nam/z7854880506459_68e3a3189c3e0abf79c3b00e34923187.jpg','Tang Thuong Cuoi Nam/z7854880514136_dd5a3162b388b306a97a29264f3c89ed.jpg','Tang Thuong Cuoi Nam/z7854880518537_13b9960d7fad02d9353136fc2afbe6b7.jpg','Tang Thuong Cuoi Nam/z7854880527098_1376ceb255fd3bce54536a34473b4512.jpg','Tang Thuong Cuoi Nam/z7854880532115_4ae95501a8cc891b31463ceab19a4f71.jpg','Tang Thuong Cuoi Nam/z7854880538414_17a8bb2f446262e191fdc8b58b6bcc8b.jpg','Tang Thuong Cuoi Nam/z7854880543230_8f4770712a12bd68c3d91c8a589d0bc0.jpg','Tang Thuong Cuoi Nam/z7854880548842_2ff573c38e905c39fc038d748af76900.jpg','Tang Thuong Cuoi Nam/z7854880558315_f1e12c9e7b70b8830e01f58f1b34a086.jpg','Tang Thuong Cuoi Nam/z7854880562020_d8deeb0c727c57b6527ef8144033fc79.jpg','Tang Thuong Cuoi Nam/z7854880570750_f04a6232afc1b36025fd23f0c6fd09ac.jpg',
+  '09_Trung Thu_2026/1790301571740_1239974926638839905_g6639611532054930544_27a5bfa5e7122989aa1d1a63829f62bd.jpg',
+  '10_ Van Nghe_2026/1787922532100_1239974926638839905_g6639611532054930544_05b1f82e5da8045e4f2833d1743b6502.jpg',
+  '10_ Van Nghe_2026/1787922532114_1239974926638839905_g6639611532054930544_2d8e2a2927d66f2ba0cc6fb55cb1d8d1.jpg',
+  '10_ Van Nghe_2026/1787922532119_1239974926638839905_g6639611532054930544_508625ff0c51411752c82b9919f9cad1.jpg',
+  '10_ Van Nghe_2026/1787922532124_1239974926638839905_g6639611532054930544_874ed517df01b290f109d06df484f42e.jpg',
+  '11_Lien Hoan giua ky_2026/1779722123957_9132778573967891690_g6639611532054930544_1fe165e48c52ef864a802f6122c67571.jpg',
+  '11_Lien Hoan giua ky_2026/1779722123976_9132778573967891690_g6639611532054930544_5650372af0ea037ce2dd6210ba0779f7.jpg',
+  '11_Lien Hoan giua ky_2026/1779722123990_9132778573967891690_g6639611532054930544_3b3c6674a07dac84f7c74e34da311e33.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124001_9132778573967891690_g6639611532054930544_5fc6f136817e408864f9df5e075d9a0f.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124011_9132778573967891690_g6639611532054930544_53de5e67fded61c60d31c145d0f37817.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124020_9132778573967891690_g6639611532054930544_84a1ce19e518ff7dfcef8133b0c7d975.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124028_9132778573967891690_g6639611532054930544_fde9d395cd6a8e618560d7f2444c5184.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124035_9132778573967891690_g6639611532054930544_a9c99fe14a3c1a011051705551eddd51.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124041_9132778573967891690_g6639611532054930544_69b321e30656480f4be14c46eb5487e5.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124047_9132778573967891690_g6639611532054930544_73f5d686b4739b66b9907f9c66ea43a9.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124052_9132778573967891690_g6639611532054930544_1da881f16b59e433f5b482669cabe375.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124057_9132778573967891690_g6639611532054930544_ca842e3faaa7755a353ee4a39fa4a03a.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124062_9132778573967891690_g6639611532054930544_02802cd734f57e232e5a196b1cc6117b.jpg',
+  '11_Lien Hoan giua ky_2026/1779722124066_9132778573967891690_g6639611532054930544_dff3013fe2df53641c3baacad2ace222.jpg',
+  '12_hoat dong ngoai khoa 2026/1769962465887_1043245851776034862_g5316418390068417171_2486fcc36725333a9b5bb726c5ad4da0.jpg',
+  '12_hoat dong ngoai khoa 2026/1769962465928_1043245851776034862_g5316418390068417171_50884accbb785d697efd3c8981815251.jpg',
+  '12_hoat dong ngoai khoa 2026/1769962951624_1043245851776034862_g5316418390068417171_ebc52f65d0d348d2a5d93b542f47171a.jpg',
+  '12_hoat dong ngoai khoa 2026/1769962951659_1043245851776034862_g5316418390068417171_ae2530e70ac014c8e0e197d6cfc63c4b.jpg',
+  '12_hoat dong ngoai khoa 2026/1769962951679_1043245851776034862_g5316418390068417171_bd9714a8fff0e8caa87ce6726b65c59b.jpg',
+  '12_hoat dong ngoai khoa 2026/1769962951700_1043245851776034862_g5316418390068417171_dee0155160d12147aa5dae2b8d3d9a72.jpg',
+  '12_hoat dong ngoai khoa 2026/1769962951716_1043245851776034862_g5316418390068417171_9da068420ec2ee3761a6045a0d171d59.jpg'
 ];
 
 const VIDS = [
-  '7669946958617.mp4','7670057954534.mp4','7670075554125.mp4','7670076301130.mp4','7670076673841.mp4','7670122953180.mp4','7670149295336.mp4','7670149477541.mp4','7670149653813.mp4','7670149832970.mp4','7670181773702.mp4','7670184443711.mp4','7670184649901.mp4','7670707781950.mp4','7670892662939.mp4','7670906979243.mp4','7670917192599.mp4'
+  '7669946958617.mp4','7670057954534.mp4','7670075554125.mp4','7670076301130.mp4','7670076673841.mp4','7670122953180.mp4','7670149295336.mp4','7670149477541.mp4','7670149653813.mp4','7670149832970.mp4','7670181773702.mp4','7670184443711.mp4','7670184649901.mp4','7670707781950.mp4','7670892662939.mp4','7670906979243.mp4','7670917192599.mp4',
+  '09_Trung Thu_2026/1790301541790_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301541798_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551816_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551824_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551829_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551834_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551838_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551841_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551844_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551847_1239974926638839905_g6639611532054930544.mp4',
+  '09_Trung Thu_2026/1790301551849_1239974926638839905_g6639611532054930544.mp4',
+  '10_ Van Nghe_2026/1787922535222_1239974926638839905_g6639611532054930544.mp4',
+  '10_ Van Nghe_2026/1787922535230_1239974926638839905_g6639611532054930544.mp4'
 ];
 
 const CH_DEFS = [
   { p: 0,   z:0,    l: 'Lối vào',   n: 'Prologue', s: 'Chào mừng phụ huynh & học sinh lớp A12' },
-  { p: 12,  z:-35,  l: 'Hành Trình', n: 'Chương I', s: 'Những dấu chân kỷ niệm đầu tiên' },
-  { p: 28,  z:-95,  l: 'Oánh Chén',   n: 'Chương II', s: 'Có thực mới vực được đạo' },
-  { p: 48,  z:-160, l: 'Gắn Kết',   n: 'Chương III', s: 'Tình bạn kết tinh qua từng bữa ăn, chuyến đi' },
-  { p: 68,  z:-230, l: 'Thước Phim', n: 'Chương IV', s: 'Dòng thời gian sống động' },
+  { p: 12,  z:-35,  l: 'Hành Trình', n: 'Chương I', s: 'Những dấu chân kỷ niệm & Ngoại khóa đầu tiên' },
+  { p: 28,  z:-95,  l: 'Oánh Chén',   n: 'Chương II', s: 'Có thực mới vực được đạo — Liên hoan tưng bừng' },
+  { p: 48,  z:-160, l: 'Gắn Kết',   n: 'Chương III', s: 'Đêm hội Trung Thu, Văn nghệ & Tình bạn A12' },
+  { p: 68,  z:-230, l: 'Thước Phim', n: 'Chương IV', s: 'Dòng thời gian sống động — Kho phim 4K' },
   { p: 85,  z:-300, l: 'Tặng Thưởng', n: 'Chương V', s: 'Vinh danh thành tích học tập cuối năm 2026' },
   { p: 96,  z:-370, l: 'Lời Kết',   n: 'Finale',    s: 'Kỷ niệm mãi mãi trong tim' }
 ];
@@ -774,46 +859,54 @@ function buildFrames() {
   let F = []; let id = 0; const SD = 370;
 
   // Group images by category for sections
-  const categorized = { trip:[], study:[], dining:[], portrait:[], general:[], achievement:[] };
-  IMGS.forEach(n => { const m = getMediaMeta(n); categorized[m.cat || 'general'].push({n, m}); });
+  const categorized = { 
+    trip:[], study:[], dining:[], portrait:[], general:[], achievement:[],
+    trungthu:[], vannghe:[], lienhoan:[], ngoaikhoa:[] 
+  };
+  IMGS.forEach(n => { const m = getMediaMeta(n); (categorized[m.cat] || categorized.general).push({n, m}); });
 
   // Collect all media items in structured chapter sequence
   const allItems = [];
 
-  // Chapter 1: General & Trip (Entrance)
-  categorized.general.concat(categorized.trip).forEach(item => {
+  const getSrc = (p, isVid) => {
+    if(p.startsWith('Tang Thuong Cuoi Nam/') || p.startsWith('09_') || p.startsWith('10_') || p.startsWith('11_') || p.startsWith('12_')) return p;
+    return isVid ? (B_VID + p) : (B_IMG + p);
+  };
+
+  // Chapter 1: General & Trip & Ngoại Khóa
+  categorized.general.concat(categorized.trip, categorized.ngoaikhoa).forEach(item => {
     allItems.push({
-      src: item.n.startsWith('Tang Thuong Cuoi Nam/') ? item.n : (B_IMG + item.n),
+      src: getSrc(item.n, false),
       meta: item.m,
       type: 'img',
       ch: 1
     });
   });
 
-  // Chapter 2: Study (Focused cluster)
-  categorized.study.forEach(item => {
+  // Chapter 2: Study & Dining & Liên Hoan Giữa Kỳ
+  categorized.study.concat(categorized.dining, categorized.lienhoan).forEach(item => {
     allItems.push({
-      src: B_IMG + item.n,
+      src: getSrc(item.n, false),
       meta: item.m,
       type: 'img',
       ch: 2
     });
   });
 
-  // Chapter 3: Dining & Portraits
-  categorized.dining.concat(categorized.portrait).forEach(item => {
+  // Chapter 3: Trung Thu, Văn Nghệ & Portraits
+  categorized.trungthu.concat(categorized.vannghe, categorized.portrait).forEach(item => {
     allItems.push({
-      src: B_IMG + item.n,
+      src: getSrc(item.n, false),
       meta: item.m,
       type: 'img',
       ch: 3
     });
   });
 
-  // Chapter 4: Videos (Gold border)
+  // Chapter 4: Videos (Gold border - all 30 videos!)
   VIDS.forEach(vn => {
     allItems.push({
-      src: B_VID + vn,
+      src: getSrc(vn, true),
       meta: getMediaMeta(vn),
       type: 'video',
       ch: 4
@@ -835,11 +928,12 @@ function buildFrames() {
 
   // ─── COMPUTE 3 DISTINCT COLLISION-FREE 3D SPATIAL LAYOUTS ───
   allItems.forEach((it, i) => {
-    // 1. LAYOUT "TUNNEL": Golden Spiral Space Highway (Guaranteed Zero Collision)
     const tProgress = i / Math.max(1, totalN - 1);
+
+    // 1. LAYOUT "TUNNEL": Golden Spiral Space Highway (Guaranteed Zero Collision)
     const tZ = -12 - tProgress * 345;
     const tAngle = i * 2.399963; // Golden angle (~137.5 deg)
-    const tRad = 7.5 + (i % 4) * 1.35;
+    const tRad = 7.5 + (i % 5) * 1.35;
     const tunnel = {
       x: tRad * Math.cos(tAngle),
       y: tRad * Math.sin(tAngle) * 0.72,
@@ -851,30 +945,30 @@ function buildFrames() {
 
     // 2. LAYOUT "HELIX": Double-Helix Architectural Carousel
     const strand = i % 2;
-    const hAngle = (Math.floor(i / 2) * 0.36) + (strand * Math.PI);
-    const hRad = 13.5;
+    const hAngle = (Math.floor(i / 2) * 0.28) + (strand * Math.PI);
+    const hRad = 14.0;
     const helix = {
       x: hRad * Math.cos(hAngle),
       y: hRad * Math.sin(hAngle) * 0.65,
       z: -12 - tProgress * 345,
       ry: -hAngle + Math.PI / 2,
-      rz: 0.06 * Math.sin(hAngle),
+      rz: 0.05 * Math.sin(hAngle),
       sc: it.type === 'video' ? 1.4 : 1.05
     };
 
-    // 3. LAYOUT "MATRIX": Monumental Swiss Curved Amphitheater Gallery Wall
-    const cols = 12;
-    const c = (i % cols) - (cols - 1) / 2; // -5.5 to +5.5
+    // 3. LAYOUT "MATRIX": Monumental Swiss Curved Amphitheater Gallery Wall (14 columns)
+    const cols = 14;
+    const c = (i % cols) - (cols - 1) / 2; // -6.5 to +6.5
     const r = Math.floor(i / cols) - (Math.ceil(totalN / cols) - 1) / 2;
-    const wallRad = 36;
-    const phi = c * 0.13;
+    const wallRad = 40;
+    const phi = c * 0.11;
     const matrix = {
       x: wallRad * Math.sin(phi),
       y: -r * 3.8,
-      z: -52 - (wallRad - wallRad * Math.cos(phi)) - (r * r) * 0.22,
+      z: -55 - (wallRad - wallRad * Math.cos(phi)) - (r * r) * 0.18,
       ry: -phi,
       rz: 0,
-      sc: 1.02
+      sc: 1.0
     };
 
     F.push({
@@ -988,6 +1082,8 @@ function startScene(FD) {
 
     texLoader.load(fd.src, (tex) => {
       tex.encoding = THREE.sRGBEncoding;
+      tex.generateMipmaps = false;
+      tex.minFilter = THREE.LinearFilter;
       mat.map = tex; mat.color.set(0xffffff); mat.needsUpdate = true;
       const ratio = tex.image.width / tex.image.height;
       plane.scale.set(ratio > w/h ? 1 : (ratio/(w/h)), ratio > w/h ? ((w/h)/ratio) : 1, 1);
@@ -1110,8 +1206,14 @@ function startScene(FD) {
       mstats.innerHTML = '<span class="stat-pill">★ CHẤT LƯỢNG: 4K 60FPS</span><span class="stat-pill">⚡ ĐỘ SỐNG ĐỘNG: 100%</span><span class="stat-pill">🎬 THỂ LOẠI: CINEMATIC</span>';
     } else if(fd.meta.cat === 'achievement') {
       mstats.innerHTML = '<span class="stat-pill">🏆 HỌC LỰC: XUẤT SẮC</span><span class="stat-pill">⚔️ CHIẾN THẦN HỌC TẬP</span><span class="stat-pill">★ RANK: TOP TIER A12</span>';
-    } else if(fd.meta.cat === 'study') {
+    } else if(fd.meta.cat === 'trungthu') {
+      mstats.innerHTML = '<span class="stat-pill">🏮 ĐÊM HỘI: TRĂNG RẰM</span><span class="stat-pill">✨ PHÁ CỖ: 100% VUI</span><span class="stat-pill">❤️ ĐẠI GIA ĐÌNH A12</span>';
+    } else if(fd.meta.cat === 'vannghe') {
+      mstats.innerHTML = '<span class="stat-pill">🎤 SÂN KHẤU: BÙNG NỔ</span><span class="stat-pill">⚡ ĐỘ CHÁY: 1000°C</span><span class="stat-pill">🌟 NGHỆ SĨ A12</span>';
+    } else if(fd.meta.cat === 'lienhoan' || fd.meta.cat === 'study') {
       mstats.innerHTML = '<span class="stat-pill">🍗 SỨC CHIẾN ĐẤU: 999/100</span><span class="stat-pill">🔥 ĐỘ ĐOÀN KẾT: VÔ CỰC</span><span class="stat-pill">🍖 DỰ TOÁN: SẠCH ĐĨA</span>';
+    } else if(fd.meta.cat === 'ngoaikhoa') {
+      mstats.innerHTML = '<span class="stat-pill">🌲 TRẢI NGHIỆM: THỰC TẾ</span><span class="stat-pill">🤝 ĐỒNG ĐỘI: VỮNG BƯỚC</span><span class="stat-pill">🧭 KỸ NĂNG: XUẤT SẮC</span>';
     } else {
       mstats.innerHTML = '<span class="stat-pill">✨ THANH XUÂN: RỰC RỠ</span><span class="stat-pill">📸 GÓC NHÌN: KỶ NIỆM</span><span class="stat-pill">❤️ ĐỘ THÂN THIẾT: 100%</span>';
     }
@@ -1149,7 +1251,13 @@ function startScene(FD) {
     window.openM(item);
   };
 
-  window.closeM = () => { document.getElementById('modal').classList.remove('open'); document.getElementById('mvid').pause(); };
+  window.closeM = () => { 
+    document.getElementById('modal').classList.remove('open'); 
+    const mv = document.getElementById('mvid');
+    mv.pause();
+    mv.removeAttribute('src'); // free video buffer memory immediately
+    mv.load();
+  };
   window.addEventListener('keydown', e => {
     if(e.key === 'Escape') closeM();
     if(document.getElementById('modal').classList.contains('open')) {
@@ -1276,33 +1384,33 @@ function startScene(FD) {
       });
     }
 
-    // 2. Surround gallery pedestals and banners to house remaining frames uniquely (zero duplicate slots)
-    for(let x = -7; x <= 7; x++) {
-      positions.push({ x: x * 1.8, y: 7.0 });
+    // 2. Surround gallery pedestals, wings & banners (190+ unique slots)
+    for(let x = -8; x <= 8; x++) {
+      positions.push({ x: x * 1.7, y: 7.0 });
+    }
+    for(let x = -8; x <= 8; x++) {
+      positions.push({ x: x * 1.7, y: -7.0 });
+    }
+    for(let y = -5; y <= 5; y++) {
+      positions.push({ x: -14.8, y: y * 1.4 });
+      positions.push({ x: -16.8, y: y * 1.4 });
+    }
+    for(let y = -5; y <= 5; y++) {
+      positions.push({ x: 14.8, y: y * 1.4 });
+      positions.push({ x: 16.8, y: y * 1.4 });
     }
     for(let x = -7; x <= 7; x++) {
-      positions.push({ x: x * 1.8, y: -7.0 });
+      positions.push({ x: x * 1.9, y: 8.8 });
     }
-    for(let y = -4; y <= 4; y++) {
-      positions.push({ x: -14.5, y: y * 1.5 });
-      positions.push({ x: -16.5, y: y * 1.5 });
-    }
-    for(let y = -4; y <= 4; y++) {
-      positions.push({ x: 14.5, y: y * 1.5 });
-      positions.push({ x: 16.5, y: y * 1.5 });
-    }
-    for(let x = -6; x <= 6; x++) {
-      positions.push({ x: x * 2.0, y: 8.8 });
-    }
-    for(let x = -6; x <= 6; x++) {
-      positions.push({ x: x * 2.0, y: -8.8 });
+    for(let x = -7; x <= 7; x++) {
+      positions.push({ x: x * 1.9, y: -8.8 });
     }
 
     // Safe expansion if count exceeds
     while(positions.length < count) {
       const idx = positions.length;
-      const angle = idx * 0.4;
-      const rad = 18 + (idx % 3) * 2;
+      const angle = idx * 0.35;
+      const rad = 20 + (idx % 4) * 2;
       positions.push({
         x: rad * Math.cos(angle),
         y: rad * Math.sin(angle) * 0.7
@@ -1321,11 +1429,11 @@ function startScene(FD) {
       const target = a12Targets[i] || { x: (i % 10 - 5) * 3, y: Math.floor(i / 10) * 2 };
       const delay = i * 20; // 20ms stagger
       setTimeout(() => {
-        // Micro-stagger Z depth by 0.05 units per frame so depth buffer never has coplanar collision!
+        // Micro-stagger Z depth by 0.04 units per frame so depth buffer never has coplanar collision!
         f.userData._finTarget = { 
           x: target.x, 
           y: target.y, 
-          z: finaleZ - (i * 0.05),
+          z: finaleZ - (i * 0.04),
           ry: 0,
           rz: 0
         };
@@ -1391,19 +1499,27 @@ function startScene(FD) {
           tgt = f.userData.layouts[active3DLayout];
         }
 
-        if(tgt) {
+        // 60FPS Distance & Visibility Culling (Zero lag on 150+ frames)
+        if(active3DLayout === 'matrix' || f.userData._inFinale) {
+          f.visible = true;
+        } else {
+          const distZ = f.position.z - cam.position.z;
+          f.visible = (distZ > -95 && distZ < 15);
+        }
+
+        if(f.visible && tgt) {
           // Smooth transition lerp between layouts
           f.position.x += (tgt.x - f.position.x) * 0.06;
           f.position.y += (tgt.y - f.position.y) * 0.06;
           f.position.z += (tgt.z - f.position.z) * 0.06;
           f.rotation.y += ((tgt.ry || 0) - f.rotation.y) * 0.06;
           f.rotation.z += ((tgt.rz || 0) - f.rotation.z) * 0.06;
-        }
 
-        // Ambient micro floating
-        if(!f.userData._inFinale) {
-          f.position.y += Math.sin(t * 0.001 + i) * 0.0015;
-          f.rotation.z += Math.cos(t * 0.0008 + i) * 0.00008;
+          // Ambient micro floating
+          if(!f.userData._inFinale) {
+            f.position.y += Math.sin(t * 0.001 + i) * 0.0015;
+            f.rotation.z += Math.cos(t * 0.0008 + i) * 0.00008;
+          }
         }
       });
       ren.render(scene, cam);
@@ -1439,11 +1555,20 @@ function renderGrid() {
   const cont = document.getElementById('grid-view');
   let html = '';
   
+  const getSecSrc = (n, isVid) => {
+    if(n.startsWith('Tang Thuong Cuoi Nam/') || n.startsWith('09_') || n.startsWith('10_') || n.startsWith('11_') || n.startsWith('12_')) return n;
+    return isVid ? (B_VID + n) : (B_IMG + n);
+  };
+
   const sections = [
-    { id:'cap', title:'Thước Phim (Video)', sub:'Dòng thời gian sống động', arr: VIDS.map(n => ({src:B_VID+n, m:getMediaMeta(n), t:'video'})) },
-    { id:'trip', title:'Hồi Ức & Chuyến Đi', sub:'Những bước chân đầu tiên', arr: IMGS.filter(n=>getMediaMeta(n).cat==='trip'||getMediaMeta(n).cat==='general').map(n=>({src:B_IMG+n, m:getMediaMeta(n), t:'img'})) },
-    { id:'study', title:'Say Mê Oánh Chén Sau Team Building', sub:'Có thực mới vực được đạo', arr: IMGS.filter(n=>getMediaMeta(n).cat==='study').map(n=>({src:B_IMG+n, m:getMediaMeta(n), t:'img'})) },
-    { id:'dining', title:'Gắn Kết & Bạn Bè', sub:'Tình bạn kết tinh qua từng bữa ăn', arr: IMGS.filter(n=>getMediaMeta(n).cat==='dining'||getMediaMeta(n).cat==='portrait').map(n=>({src:B_IMG+n, m:getMediaMeta(n), t:'img'})) },
+    { id:'trungthu', title:'Đêm Hội Trung Thu 2026', sub:'Rước đèn, phá cỗ rộn rã tiếng cười của đại gia đình A12', arr: IMGS.filter(n=>getMediaMeta(n).cat==='trungthu').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
+    { id:'vannghe', title:'Hội Diễn Văn Nghệ 2026', sub:'Sân khấu bùng nổ đam mê — Cháy hết mình cùng A12', arr: IMGS.filter(n=>getMediaMeta(n).cat==='vannghe').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
+    { id:'lienhoan', title:'Tiệc Liên Hoan Giữa Kỳ 2026', sub:'Oánh chén tưng bừng, nạp năng lượng sau những giờ học căng thẳng', arr: IMGS.filter(n=>getMediaMeta(n).cat==='lienhoan').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
+    { id:'ngoaikhoa', title:'Hoạt Động Ngoại Khóa Thực Tế 2026', sub:'Học tập thực tế, trải nghiệm và rèn luyện kỹ năng sống', arr: IMGS.filter(n=>getMediaMeta(n).cat==='ngoaikhoa').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
+    { id:'cap', title:'Thước Phim Thanh Xuân (Video 4K)', sub:'Kho 30 phim sống động ghi lại từng nụ cười rực rỡ', arr: VIDS.map(n => ({src:getSecSrc(n,true), m:getMediaMeta(n), t:'video'})) },
+    { id:'trip', title:'Hồi Ức & Chuyến Đi', sub:'Những bước chân kỷ niệm đầu tiên tại Lam Kinh', arr: IMGS.filter(n=>getMediaMeta(n).cat==='trip'||getMediaMeta(n).cat==='general').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
+    { id:'study', title:'Say Mê Oánh Chén Sau Team Building', sub:'Có thực mới vực được đạo', arr: IMGS.filter(n=>getMediaMeta(n).cat==='study').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
+    { id:'dining', title:'Gắn Kết & Bạn Bè', sub:'Tình bạn kết tinh qua từng bữa ăn', arr: IMGS.filter(n=>getMediaMeta(n).cat==='dining'||getMediaMeta(n).cat==='portrait').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
     { id:'achievement', title:'Tặng Thưởng Cuối Học Kỳ II Lớp 10', sub:'Vinh danh thành tích học tập vượt bậc của lớp A12 kết thúc năm 2026', arr: IMGS.filter(n=>getMediaMeta(n).cat==='achievement').map(n=>({src:n, m:getMediaMeta(n), t:'img'})) }
   ];
 
@@ -1455,12 +1580,17 @@ function renderGrid() {
       <div class="gv-grid">`;
     const secList = sec.arr.map(it => ({src: it.src, type: it.t, meta: it.m}));
     sec.arr.forEach((item, idx) => {
-      const d = JSON.stringify({src:item.src, type:item.t, meta:item.m, _idx: idx}).replace(/"/g, '&quot;');
       let stickerHtml = '';
       if(sec.id === 'achievement' && idx % 3 === 0) {
         stickerHtml = '<div class="gv-sticker stk-gold">★ TOP TIER A12 ★</div>';
-      } else if(sec.id === 'study' && idx % 2 === 0) {
+      } else if((sec.id === 'study' || sec.id === 'lienhoan') && idx % 2 === 0) {
         stickerHtml = '<div class="gv-sticker stk-tape">OÁNH CHÉN 100%</div>';
+      } else if(sec.id === 'trungthu') {
+        stickerHtml = '<div class="gv-sticker stk-gold">🏮 TRUNG THU VUI</div>';
+      } else if(sec.id === 'vannghe') {
+        stickerHtml = '<div class="gv-sticker stk-hype">⚡ CHÁY 1000°C</div>';
+      } else if(sec.id === 'ngoaikhoa') {
+        stickerHtml = '<div class="gv-sticker stk-cyan">🌲 NGOẠI KHÓA A12</div>';
       } else if(sec.id === 'trip' && idx % 4 === 1) {
         stickerHtml = '<div class="gv-sticker stk-hype">VERIFIED A12</div>';
       } else if(idx % 5 === 2) {
@@ -1468,7 +1598,7 @@ function renderGrid() {
       }
       html += `<div class="gv-item" onclick="openGridM(${sec.id}_list, ${idx})">`;
       if(item.t==='video') {
-         html += `<video src="${item.src}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="gv-ibadge">▶ Video</div>`;
+         html += `<video src="${item.src}" preload="none" playsinline muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="gv-ibadge">▶ Video</div>`;
       } else {
          html += `<img loading="lazy" src="${item.src}">`;
       }
