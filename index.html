@@ -143,6 +143,60 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
   letter-spacing:2px;text-transform:uppercase;margin-top:3px;font-weight:700;
 }
 
+/* 3D LAYOUT SWITCHER (SWISS MINIMALIST CONTROLS) */
+#layout-switcher {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(14, 10, 7, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 4px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  pointer-events: all;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.view-grid #layout-switcher {
+  display: none !important;
+}
+.lsw-label {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  padding: 0 8px;
+  text-transform: uppercase;
+}
+.lsw-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Space Grotesk', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 7px 13px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 0px;
+  white-space: nowrap;
+}
+.lsw-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.lsw-btn.active {
+  background: #ffffff;
+  color: #0e0a07;
+  border-color: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+}
+
 #rc{position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;pointer-events:all;}
 .btn{
   display:flex;align-items:center;gap:10px;padding:10px 18px;
@@ -411,9 +465,27 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 .fb:hover,.fb.p{background:#ffffff;color:#0e0a07;box-shadow: 0 0 25px rgba(255,255,255,.3);}
 
 @media (max-width: 768px) {
-  #topbar { padding: 14px 18px; }
+  #topbar { 
+    padding: 12px 14px; 
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
   .tl { font-size: 13px; }
   .tt { font-size: 8.5px; }
+  #layout-switcher {
+    width: 100%;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 3px;
+  }
+  .lsw-label { display: none; }
+  .lsw-btn {
+    padding: 6px 4px;
+    font-size: 9.5px;
+    flex: 1;
+    justify-content: center;
+  }
   #rc {
     top: auto; bottom: 20px; right: 0; left: 0;
     flex-direction: row; flex-wrap: nowrap; width: 100%;
@@ -495,8 +567,16 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 
 <div id="ui">
   <div id="topbar">
-    <div class="tl">A12 EXHIBITION</div>
-    <div class="tt">Niềm tự hào Lê Quý Đôn</div>
+    <div class="tl-wrap">
+      <div class="tl">A12 EXHIBITION</div>
+      <div class="tt">Niềm tự hào Lê Quý Đôn</div>
+    </div>
+    <div id="layout-switcher">
+      <span class="lsw-label">BỐ CỤC 3D</span>
+      <button class="lsw-btn active" id="btn-layout-tunnel" onclick="set3DLayout('tunnel')"><span>🌀</span> <span>Đường Hầm</span></button>
+      <button class="lsw-btn" id="btn-layout-helix" onclick="set3DLayout('helix')"><span>🧬</span> <span>Xoắn Helix</span></button>
+      <button class="lsw-btn" id="btn-layout-matrix" onclick="set3DLayout('matrix')"><span>🏛️</span> <span>Đại Sảnh</span></button>
+    </div>
   </div>
   <div id="rc">
     <div class="btn" onclick="toggleViewMode()"><span id="vicon">📱</span><span id="vlbl">Chế độ Lưới (Mobile)</span></div>
@@ -691,52 +771,123 @@ const CH_DEFS = [
 ];
 
 function buildFrames() {
-  let F = []; let id=0; const SD = 370;
-  const rr = (a, b) => a + Math.random() * (b - a);
+  let F = []; let id = 0; const SD = 370;
 
   // Group images by category for sections
   const categorized = { trip:[], study:[], dining:[], portrait:[], general:[], achievement:[] };
   IMGS.forEach(n => { const m = getMediaMeta(n); categorized[m.cat || 'general'].push({n, m}); });
 
-  // Chapter 1: General & Trip (Entrance) — 3 DEPTH LAYERS
-  categorized.general.concat(categorized.trip).forEach((item, i, arr) => {
-    const z = -10 - i * 3.5;
-    const pct = i / arr.length;
-    const layer = pct < 0.15 ? 'fg' : pct > 0.85 ? 'bg' : 'mid';
-    const xRange = layer === 'fg' ? 12 : layer === 'bg' ? 5 : 8;
-    const yRange = layer === 'fg' ? 7 : layer === 'bg' ? 3 : 5;
-    const sc = layer === 'fg' ? 1.4 : layer === 'bg' ? 0.7 : 1;
-    F.push({ id:id++, x:rr(-xRange, xRange), y:rr(-yRange, yRange), z, ry:rr(-.3, .3), rz:rr(-.2, .2), src: item.n.startsWith('Tang Thuong Cuoi Nam/') ? item.n : (B_IMG+item.n), meta: item.m, type:'img', sc, layer });
+  // Collect all media items in structured chapter sequence
+  const allItems = [];
+
+  // Chapter 1: General & Trip (Entrance)
+  categorized.general.concat(categorized.trip).forEach(item => {
+    allItems.push({
+      src: item.n.startsWith('Tang Thuong Cuoi Nam/') ? item.n : (B_IMG + item.n),
+      meta: item.m,
+      type: 'img',
+      ch: 1
+    });
   });
 
   // Chapter 2: Study (Focused cluster)
-  categorized.study.forEach((item, i) => {
-    const z = -100 - i * 6;
-    F.push({ id:id++, x:rr(-4, 4), y:rr(-3, 3), z, ry:rr(-.2, .2), rz:rr(-.1, .1), src: B_IMG+item.n, meta: item.m, type:'img', sc:1.3 });
+  categorized.study.forEach(item => {
+    allItems.push({
+      src: B_IMG + item.n,
+      meta: item.m,
+      type: 'img',
+      ch: 2
+    });
   });
 
-  // Chapter 3: Dining & Portraits — 3 DEPTH LAYERS
-  categorized.dining.concat(categorized.portrait).forEach((item, i, arr) => {
-    const z = -160 - i * 4;
-    const pct = i / arr.length;
-    const layer = pct < 0.15 ? 'fg' : pct > 0.85 ? 'bg' : 'mid';
-    const xRange = layer === 'fg' ? 12 : layer === 'bg' ? 5 : 9;
-    const yRange = layer === 'fg' ? 8 : layer === 'bg' ? 3 : 6;
-    const sc = layer === 'fg' ? 1.35 : layer === 'bg' ? 0.7 : 1;
-    F.push({ id:id++, x:rr(-xRange, xRange), y:rr(-yRange, yRange), z, ry:rr(-.4, .4), rz:rr(-.2, .2), src: B_IMG+item.n, meta: item.m, type:'img', sc, layer });
+  // Chapter 3: Dining & Portraits
+  categorized.dining.concat(categorized.portrait).forEach(item => {
+    allItems.push({
+      src: B_IMG + item.n,
+      meta: item.m,
+      type: 'img',
+      ch: 3
+    });
   });
 
-  // Chapter 4: VIDEOS (GOLD BORDER)
-  VIDS.forEach((vn, i) => {
-      const z = -230 - i * 8;
-      const meta = getMediaMeta(vn);
-      F.push({ id:id++, x: (i%2?5:-5), y: (i%3-1)*3, z, ry: i%2?-.5:.5, rz:0, src: B_VID+vn, meta, type:'video', sc:1.6 });
+  // Chapter 4: Videos (Gold border)
+  VIDS.forEach(vn => {
+    allItems.push({
+      src: B_VID + vn,
+      meta: getMediaMeta(vn),
+      type: 'video',
+      ch: 4
+    });
   });
 
-  // Chapter 5: Tặng Thưởng (Achievements - with gold borders!)
-  categorized.achievement.forEach((item, i) => {
-    const z = -300 - i * 4.5;
-    F.push({ id:id++, x:rr(-8, 8), y:rr(-5, 5), z, ry:rr(-.3, .3), rz:rr(-.2, .2), src: item.n, meta: item.m, type:'img', borderGold: true, sc:1.25 });
+  // Chapter 5: Tặng Thưởng (Achievements)
+  categorized.achievement.forEach(item => {
+    allItems.push({
+      src: item.n,
+      meta: item.m,
+      type: 'img',
+      borderGold: true,
+      ch: 5
+    });
+  });
+
+  const totalN = allItems.length;
+
+  // ─── COMPUTE 3 DISTINCT COLLISION-FREE 3D SPATIAL LAYOUTS ───
+  allItems.forEach((it, i) => {
+    // 1. LAYOUT "TUNNEL": Golden Spiral Space Highway (Guaranteed Zero Collision)
+    const tProgress = i / Math.max(1, totalN - 1);
+    const tZ = -12 - tProgress * 345;
+    const tAngle = i * 2.399963; // Golden angle (~137.5 deg)
+    const tRad = 7.5 + (i % 4) * 1.35;
+    const tunnel = {
+      x: tRad * Math.cos(tAngle),
+      y: tRad * Math.sin(tAngle) * 0.72,
+      z: tZ,
+      ry: -Math.sin(tAngle) * 0.22,
+      rz: Math.cos(tAngle) * 0.12,
+      sc: it.type === 'video' ? 1.5 : (it.borderGold ? 1.25 : 1.1)
+    };
+
+    // 2. LAYOUT "HELIX": Double-Helix Architectural Carousel
+    const strand = i % 2;
+    const hAngle = (Math.floor(i / 2) * 0.36) + (strand * Math.PI);
+    const hRad = 13.5;
+    const helix = {
+      x: hRad * Math.cos(hAngle),
+      y: hRad * Math.sin(hAngle) * 0.65,
+      z: -12 - tProgress * 345,
+      ry: -hAngle + Math.PI / 2,
+      rz: 0.06 * Math.sin(hAngle),
+      sc: it.type === 'video' ? 1.4 : 1.05
+    };
+
+    // 3. LAYOUT "MATRIX": Monumental Swiss Curved Amphitheater Gallery Wall
+    const cols = 12;
+    const c = (i % cols) - (cols - 1) / 2; // -5.5 to +5.5
+    const r = Math.floor(i / cols) - (Math.ceil(totalN / cols) - 1) / 2;
+    const wallRad = 36;
+    const phi = c * 0.13;
+    const matrix = {
+      x: wallRad * Math.sin(phi),
+      y: -r * 3.8,
+      z: -52 - (wallRad - wallRad * Math.cos(phi)) - (r * r) * 0.22,
+      ry: -phi,
+      rz: 0,
+      sc: 1.02
+    };
+
+    F.push({
+      id: id++,
+      ...it,
+      layouts: { tunnel, helix, matrix },
+      x: tunnel.x,
+      y: tunnel.y,
+      z: tunnel.z,
+      ry: tunnel.ry,
+      rz: tunnel.rz,
+      sc: tunnel.sc
+    });
   });
 
   return F;
@@ -809,15 +960,30 @@ function startScene(FD) {
     grp.rotation.set(0, fd.ry, fd.rz);
     grp.scale.setScalar(fd.sc || 1);
     
-    // Border
+    // Border - layered with polygon offset behind photo plane
     const bColor = (fd.type === 'video' || fd.borderGold) ? 0xc9a84c : 0xffffff;
-    const border = new THREE.Mesh(new THREE.PlaneGeometry(w+0.2, h+0.2), new THREE.MeshLambertMaterial({color: bColor}));
-    border.position.z = -0.01; grp.add(border);
+    const borderMat = new THREE.MeshLambertMaterial({
+      color: bColor,
+      polygonOffset: true,
+      polygonOffsetFactor: 2,
+      polygonOffsetUnits: 2
+    });
+    const border = new THREE.Mesh(new THREE.PlaneGeometry(w+0.2, h+0.2), borderMat);
+    border.position.z = -0.04; 
+    grp.add(border);
 
-    // Plane
+    // Photo Plane - safe depth buffering and polygon offset
     const isDim = fd.layer === 'bg';
-    const mat = new THREE.MeshLambertMaterial({ color: 0x222222, transparent: isDim, opacity: isDim ? 0.6 : 1 });
+    const mat = new THREE.MeshLambertMaterial({ 
+      color: 0x222222, 
+      transparent: isDim, 
+      opacity: isDim ? 0.6 : 1,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1
+    });
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
+    plane.position.z = 0;
     grp.add(plane);
 
     texLoader.load(fd.src, (tex) => {
@@ -835,8 +1001,10 @@ function startScene(FD) {
     });
 
     if(fd.meta) {
-      const lbl = new THREE.Mesh(new THREE.PlaneGeometry(w, 0.8), new THREE.MeshBasicMaterial({ map: mkLabel(fd.meta), transparent:true }));
-      lbl.position.y = -h/2 - 0.6; grp.add(lbl);
+      const lbl = new THREE.Mesh(new THREE.PlaneGeometry(w, 0.8), new THREE.MeshBasicMaterial({ map: mkLabel(fd.meta), transparent:true, depthWrite: false }));
+      lbl.position.y = -h/2 - 0.6; 
+      lbl.position.z = 0.04;
+      grp.add(lbl);
     }
 
     grp.userData = fd;
@@ -845,15 +1013,28 @@ function startScene(FD) {
   });
 
   // Ghost chapter labels floating in 3D space
+  const ghostMeshes = [];
   CH_DEFS.forEach((ch, i) => {
     if(i === 0 || i === CH_DEFS.length - 1) return; // skip prologue & finale
     const tex = mkGhostText(ch.l);
     const ghostMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.08, side: THREE.DoubleSide, depthWrite: false });
     const ghost = new THREE.Mesh(new THREE.PlaneGeometry(25, 6), ghostMat);
     ghost.position.set(0, 0, ch.z - 5);
-    ghost.rotation.y = (i % 2 === 0) ? 0.05 : -0.05; // slight angle alternating
+    ghost.rotation.y = (i % 2 === 0) ? 0.05 : -0.05;
     scene.add(ghost);
+    ghostMeshes.push(ghost);
   });
+
+  // Active 3D Layout state and switcher
+  let active3DLayout = 'tunnel';
+  window.set3DLayout = function(mode) {
+    if(mode !== 'tunnel' && mode !== 'helix' && mode !== 'matrix') return;
+    active3DLayout = mode;
+    ['tunnel', 'helix', 'matrix'].forEach(m => {
+      const btn = document.getElementById('btn-layout-' + m);
+      if(btn) btn.classList.toggle('active', m === mode);
+    });
+  };
 
   // Events
   let scrollY = 0, tZ = 0, cZ = 0, mouse = new THREE.Vector2(), ray = new THREE.Raycaster();
@@ -1073,38 +1254,81 @@ function startScene(FD) {
     }
   }, { once: true });
 
-  // Generate "A12" mosaic positions for N frames
+  // Generate "A12" mosaic positions for N frames without duplicate coordinates
   function genA12Grid(count) {
-    const pattern = [
-      // A
+    const letterPattern = [
+      // A (16 points)
       [1,0],[2,0],[0,1],[3,1],[0,2],[3,2],[0,3],[1,3],[2,3],[3,3],[0,4],[3,4],[0,5],[3,5],[0,6],[3,6],
-      // 1
+      // 1 (10 points)
       [5,0],[6,0],[6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[6,6],[7,6],
-      // 2
+      // 2 (22 points)
       [9,0],[10,0],[11,0],[12,0],[12,1],[9,2],[10,2],[11,2],[12,2],[9,3],[9,4],[10,4],[11,4],[12,4],[9,5],[10,5],[11,5],[12,5],[9,6],[10,6],[11,6],[12,6]
     ];
     const positions = [];
     const totalW = 14, totalH = 7;
-    for(let i = 0; i < count; i++) {
-      const p = pattern[i % pattern.length];
-      const x = (p[0] - totalW / 2) * 1.5;
-      const y = -(p[1] - totalH / 2) * 1.5;
-      positions.push({ x, y });
+    
+    // 1. Core letters A 1 2 (48 slots)
+    for(let i = 0; i < letterPattern.length; i++) {
+      const p = letterPattern[i];
+      positions.push({
+        x: (p[0] - totalW / 2) * 1.6,
+        y: -(p[1] - totalH / 2) * 1.5
+      });
     }
-    return positions;
+
+    // 2. Surround gallery pedestals and banners to house remaining frames uniquely (zero duplicate slots)
+    for(let x = -7; x <= 7; x++) {
+      positions.push({ x: x * 1.8, y: 7.0 });
+    }
+    for(let x = -7; x <= 7; x++) {
+      positions.push({ x: x * 1.8, y: -7.0 });
+    }
+    for(let y = -4; y <= 4; y++) {
+      positions.push({ x: -14.5, y: y * 1.5 });
+      positions.push({ x: -16.5, y: y * 1.5 });
+    }
+    for(let y = -4; y <= 4; y++) {
+      positions.push({ x: 14.5, y: y * 1.5 });
+      positions.push({ x: 16.5, y: y * 1.5 });
+    }
+    for(let x = -6; x <= 6; x++) {
+      positions.push({ x: x * 2.0, y: 8.8 });
+    }
+    for(let x = -6; x <= 6; x++) {
+      positions.push({ x: x * 2.0, y: -8.8 });
+    }
+
+    // Safe expansion if count exceeds
+    while(positions.length < count) {
+      const idx = positions.length;
+      const angle = idx * 0.4;
+      const rad = 18 + (idx % 3) * 2;
+      positions.push({
+        x: rad * Math.cos(angle),
+        y: rad * Math.sin(angle) * 0.7
+      });
+    }
+
+    return positions.slice(0, count);
   }
   const a12Targets = genA12Grid(fms.length);
 
   let finaleStarted = false;
-  const originalPositions = fms.map(f => ({ x: f.position.x, y: f.position.y, z: f.position.z, ry: f.rotation.y, rz: f.rotation.z }));
 
   function triggerCurtainCall() {
-    const finaleZ = -SD - 5; // just past camera at finale
+    const finaleZ = -SD - 5;
     fms.forEach((f, i) => {
-      const target = a12Targets[i];
-      const delay = i * 30; // 30ms stagger between frames
+      const target = a12Targets[i] || { x: (i % 10 - 5) * 3, y: Math.floor(i / 10) * 2 };
+      const delay = i * 20; // 20ms stagger
       setTimeout(() => {
-        f.userData._finTarget = { x: target.x, y: target.y, z: finaleZ };
+        // Micro-stagger Z depth by 0.05 units per frame so depth buffer never has coplanar collision!
+        f.userData._finTarget = { 
+          x: target.x, 
+          y: target.y, 
+          z: finaleZ - (i * 0.05),
+          ry: 0,
+          rz: 0
+        };
         f.userData._inFinale = true;
       }, delay);
     });
@@ -1113,10 +1337,7 @@ function startScene(FD) {
   function resetFrames() {
     fms.forEach((f, i) => {
       f.userData._inFinale = false;
-      const orig = originalPositions[i];
-      f.position.set(orig.x, orig.y, orig.z);
-      f.rotation.y = orig.ry;
-      f.rotation.z = orig.rz;
+      f.userData._finTarget = null;
     });
   }
 
@@ -1126,37 +1347,63 @@ function startScene(FD) {
       let bass = 0;
       if(analyser && mOn) {
         analyser.getByteFrequencyData(freqData);
-        // Average of first 8 bins = bass energy (0-255)
         for(let i = 0; i < 8; i++) bass += freqData[i];
-        bass = (bass / 8) / 255; // normalize to 0-1
+        bass = (bass / 8) / 255;
       }
 
       cZ += (tZ - cZ) * 0.08;
-      cam.position.z = cZ + bass * 0.15; // micro camera push on bass
-      cam.position.x += (mouse.x * 2 - cam.position.x) * 0.05;
-      cam.position.y += (-mouse.y * 1.5 - cam.position.y) * 0.05;
-      cam.lookAt(cam.position.x, cam.position.y, cam.position.z - 10);
+
+      if(active3DLayout === 'matrix') {
+        // In Matrix layout: camera acts as panoramic tour in front of the curved amphitheater
+        const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+        const scrollProgress = window.scrollY / maxScroll;
+        const targetCamY = (0.5 - scrollProgress) * 26;
+        cam.position.z += (-6 + bass * 0.15 - cam.position.z) * 0.06;
+        cam.position.x += (mouse.x * 22 - cam.position.x) * 0.05;
+        cam.position.y += ((-mouse.y * 14 + targetCamY) - cam.position.y) * 0.05;
+        cam.lookAt(cam.position.x * 0.65, cam.position.y * 0.65, -55);
+      } else {
+        // In Tunnel & Helix layout:
+        cam.position.z = cZ + bass * 0.15;
+        cam.position.x += (mouse.x * 2.2 - cam.position.x) * 0.05;
+        cam.position.y += (-mouse.y * 1.6 - cam.position.y) * 0.05;
+        cam.lookAt(cam.position.x, cam.position.y, cam.position.z - 10);
+      }
       
       // Warp Speed / Hyperdrive scroll velocity effect
       const scrollVel = Math.abs(tZ - cZ);
-      const warpZ = 1 + Math.min(scrollVel * 0.25, 4); // stretch particles up to 5x on Z
+      const warpZ = 1 + Math.min(scrollVel * 0.25, 4);
       const breathScale = 1 + bass * 0.05;
       points.scale.set(breathScale, breathScale, breathScale * warpZ);
       points.rotation.y = t * 0.0001;
-      pm.opacity = (0.4 + bass * 0.3) + Math.min(scrollVel * 0.03, 0.4); // glow brighter when warping
+      pm.opacity = (0.4 + bass * 0.3) + Math.min(scrollVel * 0.03, 0.4);
+
+      // Hide ghost chapter text in Matrix mode so it doesn't clutter the gallery wall
+      ghostMeshes.forEach(gm => {
+        gm.visible = (active3DLayout !== 'matrix');
+      });
 
       fms.forEach((f, i) => {
+        let tgt;
         if(f.userData._inFinale && f.userData._finTarget) {
-          // Lerp to A12 formation
-          const tgt = f.userData._finTarget;
-          f.position.x += (tgt.x - f.position.x) * 0.03;
-          f.position.y += (tgt.y - f.position.y) * 0.03;
-          f.position.z += (tgt.z - f.position.z) * 0.03;
-          f.rotation.y *= 0.97; // flatten rotations
-          f.rotation.z *= 0.97;
-        } else {
-          f.position.y += Math.sin(t * 0.001 + i) * 0.002;
-          f.rotation.z += Math.cos(t * 0.0008 + i) * 0.0001;
+          tgt = f.userData._finTarget;
+        } else if(f.userData.layouts && f.userData.layouts[active3DLayout]) {
+          tgt = f.userData.layouts[active3DLayout];
+        }
+
+        if(tgt) {
+          // Smooth transition lerp between layouts
+          f.position.x += (tgt.x - f.position.x) * 0.06;
+          f.position.y += (tgt.y - f.position.y) * 0.06;
+          f.position.z += (tgt.z - f.position.z) * 0.06;
+          f.rotation.y += ((tgt.ry || 0) - f.rotation.y) * 0.06;
+          f.rotation.z += ((tgt.rz || 0) - f.rotation.z) * 0.06;
+        }
+
+        // Ambient micro floating
+        if(!f.userData._inFinale) {
+          f.position.y += Math.sin(t * 0.001 + i) * 0.0015;
+          f.rotation.z += Math.cos(t * 0.0008 + i) * 0.00008;
         }
       });
       ren.render(scene, cam);
