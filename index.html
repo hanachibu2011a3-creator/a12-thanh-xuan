@@ -233,6 +233,21 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 .mi{position:relative;max-width:1100px;max-height:90vh;width:94%;text-align:center; pointer-events:none; cursor:default; transform:scale(0.3); opacity:0;}
 .mf{border-radius:6px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,1); position: relative; display:inline-block; max-height: 75vh; pointer-events:all; border: 1px solid rgba(255,255,255,0.1);}
 #mimg, #mvid{max-width:100%; max-height:75vh; display:none; object-fit:contain; background:#000; vertical-align: middle;}
+
+/* VIDEO BUFFER LOADER */
+.video-loader {
+  position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(14, 10, 7, 0.75); backdrop-filter: blur(10px); z-index: 10; pointer-events: none;
+}
+.v-spinner {
+  width: 46px; height: 46px; border: 2.5px solid rgba(255,255,255,0.15); border-top-color: #e02424;
+  border-radius: 50%; animation: vSpin 0.75s linear infinite; margin-bottom: 14px;
+}
+@keyframes vSpin { to { transform: rotate(360deg); } }
+.v-text {
+  font-family: 'Space Grotesk', monospace; font-size: 11px; font-weight: 700; color: #ffffff; letter-spacing: 1.5px; text-transform: uppercase;
+}
+
 .mc{
   font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;
   letter-spacing:-0.5px;text-transform:uppercase;margin-top:20px; color:#ffffff;
@@ -406,11 +421,17 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
 #grid-view{position:relative;z-index:40;display:none;padding:120px 6% 80px;background:#0a0806;min-height:100vh;}
 #grid-view.active{display:block;}
 .gv-ch{margin-bottom:70px;position:relative;z-index:20;}
+.gv-tit-wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:2px solid #e02424;padding-bottom:12px;margin-bottom:8px;}
 .gv-tit{
-  font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800;
-  color:#ffffff;letter-spacing:-1px;text-transform:uppercase;
-  margin-bottom:6px;border-bottom:2px solid #e02424;padding-bottom:12px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;font-weight:800;
+  color:#ffffff;letter-spacing:-1px;text-transform:uppercase;margin-bottom:0;
 }
+.gv-event-tag{
+  font-family:'Space Grotesk',monospace;font-size:10px;font-weight:700;
+  color:#ffffff;background:#e02424;padding:4px 12px;letter-spacing:1px;text-transform:uppercase;border-radius:0px;
+}
+.gv-event-tag.gold{background:var(--gold);color:#0e0a07;}
+.gv-event-tag.cyan{background:#06b6d4;color:#0e0a07;}
 .gv-sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:rgba(250,246,240,0.65);font-weight:500;margin-bottom:30px;letter-spacing:0.3px;}
 .gv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;}
 @media (min-width: 768px) { .gv-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;} }
@@ -430,7 +451,24 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
   position:absolute;top:10px;right:10px;background:#e02424;color:#ffffff;
   font-family:'Space Grotesk',monospace;font-size:9px;font-weight:700;
   padding:4px 10px;border-radius:0px;letter-spacing:1px;text-transform:uppercase;
-  pointer-events:none;
+  pointer-events:none;z-index:5;
+}
+.gv-ibadge.video-badge{
+  background:#e02424;box-shadow:0 4px 14px rgba(224,36,36,0.6);font-weight:800;
+}
+.gv-ibadge.img-badge{
+  background:rgba(255,255,255,0.15);backdrop-filter:blur(6px);color:#ffffff;
+}
+.gv-play-hint{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;opacity:0.8;transition:all 0.3s ease;z-index:4;
+}
+.gv-item:hover .gv-play-hint{opacity:1;transform:scale(1.15);}
+.gv-play-icon{
+  width:46px;height:46px;border-radius:50%;background:rgba(14,10,7,0.7);
+  border:1.5px solid rgba(255,255,255,0.9);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:16px;padding-left:3px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.7);
 }
 
 /* TOGGLE BEHAVIOR */
@@ -586,12 +624,13 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
   </div>
   <div id="cnav">
     <div class="cni" onclick="jumpCh(0)"><div class="nd"></div>Lối vào (Entrance)</div>
-    <div class="cni" onclick="jumpCh(1)"><div class="nd"></div>Chương I: Gặp Gỡ & Đồng Hành</div>
-    <div class="cni" onclick="jumpCh(2)"><div class="nd"></div>Chương II: Say Mê Oánh Chén Sau Team Building</div>
-    <div class="cni" onclick="jumpCh(3)"><div class="nd"></div>Chương III: Gắn Kết Phút Giây</div>
-    <div class="cni" onclick="jumpCh(4)"><div class="nd"></div>Chương IV: Thước Phim Thanh Xuân</div>
-    <div class="cni" onclick="jumpCh(5)"><div class="nd"></div>Chương V: Tặng Thưởng Lớp 10</div>
-    <div class="cni" onclick="jumpCh(6)"><div class="nd"></div>Lời Kết (Finale)</div>
+    <div class="cni" onclick="jumpCh(1)"><div class="nd"></div>Chương I: Đêm Hội Trung Thu 2026 (Mới nhất)</div>
+    <div class="cni" onclick="jumpCh(2)"><div class="nd"></div>Chương II: Hội Diễn Văn Nghệ 2026</div>
+    <div class="cni" onclick="jumpCh(3)"><div class="nd"></div>Chương III: Tặng Thưởng & Tổng Kết Lớp 10</div>
+    <div class="cni" onclick="jumpCh(4)"><div class="nd"></div>Chương IV: Đại Tiệc Liên Hoan Giữa Kỳ</div>
+    <div class="cni" onclick="jumpCh(5)"><div class="nd"></div>Chương V: Chuyến Đi Lam Kinh & Dã Ngoại</div>
+    <div class="cni" onclick="jumpCh(6)"><div class="nd"></div>Chương VI: Hoạt Động Ngoại Khóa Đầu Tiên</div>
+    <div class="cni" onclick="jumpCh(7)"><div class="nd"></div>Lời Kết: Đại Hợp Xướng A12</div>
     <div class="cni" onclick="window.location.href='tang-thuong.html'" style="border-top:1px solid rgba(255,255,255,0.08);margin-top:4px;padding-top:8px;color:var(--gold);"><div class="nd" style="background:var(--gold);"></div>🏆 Phòng Khen Thưởng Riêng</div>
   </div>
   <div id="bp">
@@ -617,7 +656,11 @@ body{background:var(--deep);color:var(--cream);font-family:'Be Vietnam Pro',sans
     <div class="mx" onclick="closeM()">✕ Đóng (ESC)</div>
     <div class="mf">
         <img id="mimg" src="" alt="A12 Gallery">
-        <video id="mvid" controls playsinline loop></video>
+        <video id="mvid" controls playsinline loop preload="auto"></video>
+        <div class="video-loader" id="vloader">
+          <div class="v-spinner"></div>
+          <div class="v-text">Đang tải luồng video HD...</div>
+        </div>
     </div>
     <div class="mc" id="mcap"></div>
     <div class="ms" id="msub"></div>
@@ -846,13 +889,14 @@ const VIDS = [
 ];
 
 const CH_DEFS = [
-  { p: 0,   z:0,    l: 'Lối vào',   n: 'Prologue', s: 'Chào mừng phụ huynh & học sinh lớp A12' },
-  { p: 12,  z:-35,  l: 'Hành Trình', n: 'Chương I', s: 'Những dấu chân kỷ niệm & Ngoại khóa đầu tiên' },
-  { p: 28,  z:-95,  l: 'Oánh Chén',   n: 'Chương II', s: 'Có thực mới vực được đạo — Liên hoan tưng bừng' },
-  { p: 48,  z:-160, l: 'Gắn Kết',   n: 'Chương III', s: 'Đêm hội Trung Thu, Văn nghệ & Tình bạn A12' },
-  { p: 68,  z:-230, l: 'Thước Phim', n: 'Chương IV', s: 'Dòng thời gian sống động — Kho phim 4K' },
-  { p: 85,  z:-300, l: 'Tặng Thưởng', n: 'Chương V', s: 'Vinh danh thành tích học tập cuối năm 2026' },
-  { p: 96,  z:-370, l: 'Lời Kết',   n: 'Finale',    s: 'Kỷ niệm mãi mãi trong tim' }
+  { p: 0,   z:0,    l: 'Lối vào',            n: 'Prologue',   s: 'Chào mừng đại gia đình & bạn bè A12' },
+  { p: 10,  z:-30,  l: 'Đêm Hội Trung Thu',  n: 'Chương I',   s: 'Mới nhất — Rước đèn, phá cỗ rộn rã tiếng cười (Ảnh & 11 Clip)' },
+  { p: 25,  z:-75,  l: 'Hội Diễn Văn Nghệ',  n: 'Chương II',  s: 'Sân khấu bùng nổ nhiệt huyết — 4 Ảnh & 2 Video cháy hết mình' },
+  { p: 40,  z:-135, l: 'Tặng Thưởng Lớp 10', n: 'Chương III', s: 'Vinh danh 38 gương mặt xuất sắc cuối năm học 2026' },
+  { p: 60,  z:-210, l: 'Liên Hoan Giữa Kỳ',  n: 'Chương IV',  s: '14 khoảnh khắc oánh chén nạp năng lượng sau thi cử' },
+  { p: 75,  z:-280, l: 'Hành Trình Lam Kinh', n: 'Chương V',   s: 'Dấu chân thanh xuân — 59 Ảnh & 17 Thước phim dã ngoại' },
+  { p: 90,  z:-340, l: 'Ngoại Khóa Khởi Đầu', n: 'Chương VI',  s: 'Những ngày đầu hội ngộ & trải nghiệm thực tế' },
+  { p: 97,  z:-370, l: 'Lời Kết',            n: 'Finale',     s: 'Thanh xuân này, cảm ơn vì có các bạn' }
 ];
 
 function buildFrames() {
@@ -865,7 +909,7 @@ function buildFrames() {
   };
   IMGS.forEach(n => { const m = getMediaMeta(n); (categorized[m.cat] || categorized.general).push({n, m}); });
 
-  // Collect all media items in structured chapter sequence
+  // Collect all media items in structured chronological chapter sequence (Newest -> Oldest)
   const allItems = [];
 
   const getSrc = (p, isVid) => {
@@ -873,8 +917,8 @@ function buildFrames() {
     return isVid ? (B_VID + p) : (B_IMG + p);
   };
 
-  // Chapter 1: General & Trip & Ngoại Khóa
-  categorized.general.concat(categorized.trip, categorized.ngoaikhoa).forEach(item => {
+  // Chapter 1: Đêm Hội Trung Thu 2026 (Mới nhất: 1 photo + 11 videos unified)
+  categorized.trungthu.forEach(item => {
     allItems.push({
       src: getSrc(item.n, false),
       meta: item.m,
@@ -882,9 +926,17 @@ function buildFrames() {
       ch: 1
     });
   });
+  VIDS.filter(v => v.includes('09_Trung Thu')).forEach(vn => {
+    allItems.push({
+      src: getSrc(vn, true),
+      meta: getMediaMeta(vn),
+      type: 'video',
+      ch: 1
+    });
+  });
 
-  // Chapter 2: Study & Dining & Liên Hoan Giữa Kỳ
-  categorized.study.concat(categorized.dining, categorized.lienhoan).forEach(item => {
+  // Chapter 2: Hội Diễn Văn Nghệ 2026 (4 photos + 2 performance videos unified)
+  categorized.vannghe.forEach(item => {
     allItems.push({
       src: getSrc(item.n, false),
       meta: item.m,
@@ -892,35 +944,76 @@ function buildFrames() {
       ch: 2
     });
   });
-
-  // Chapter 3: Trung Thu, Văn Nghệ & Portraits
-  categorized.trungthu.concat(categorized.vannghe, categorized.portrait).forEach(item => {
-    allItems.push({
-      src: getSrc(item.n, false),
-      meta: item.m,
-      type: 'img',
-      ch: 3
-    });
-  });
-
-  // Chapter 4: Videos (Gold border - all 30 videos!)
-  VIDS.forEach(vn => {
+  VIDS.filter(v => v.includes('10_ Van Nghe') || v.includes('10_van nghe')).forEach(vn => {
     allItems.push({
       src: getSrc(vn, true),
       meta: getMediaMeta(vn),
       type: 'video',
-      ch: 4
+      ch: 2
     });
   });
 
-  // Chapter 5: Tặng Thưởng (Achievements)
+  // Chapter 3: Tặng Thưởng & Tổng Kết Cuối Năm Lớp 10 (38 award photos)
   categorized.achievement.forEach(item => {
     allItems.push({
       src: item.n,
       meta: item.m,
       type: 'img',
       borderGold: true,
+      ch: 3
+    });
+  });
+
+  // Chapter 4: Đại Tiệc Liên Hoan Giữa Kỳ 2026 (14 celebration photos)
+  categorized.lienhoan.forEach(item => {
+    allItems.push({
+      src: getSrc(item.n, false),
+      meta: item.m,
+      type: 'img',
+      ch: 4
+    });
+  });
+
+  // Chapter 5: Hành Trình Lam Kinh & Team Building Dã Ngoại (59 photos + 17 videos unified)
+  const lamKinhPhotos = categorized.trip.concat(categorized.study, categorized.dining, categorized.portrait, categorized.general);
+  const lamKinhVideos = VIDS.filter(v => !v.includes('09_Trung Thu') && !v.includes('10_ Van Nghe') && !v.includes('10_van nghe'));
+  
+  let vIdx = 0;
+  for(let i = 0; i < lamKinhPhotos.length; i++) {
+    allItems.push({
+      src: getSrc(lamKinhPhotos[i].n, false),
+      meta: lamKinhPhotos[i].m,
+      type: 'img',
       ch: 5
+    });
+    // Interleave 1 video every ~3-4 photos for smooth visual pacing
+    if((i + 1) % 4 === 0 && vIdx < lamKinhVideos.length) {
+      const vn = lamKinhVideos[vIdx++];
+      allItems.push({
+        src: getSrc(vn, true),
+        meta: getMediaMeta(vn),
+        type: 'video',
+        ch: 5
+      });
+    }
+  }
+  while(vIdx < lamKinhVideos.length) {
+    const vn = lamKinhVideos[vIdx++];
+    allItems.push({
+      src: getSrc(vn, true),
+      meta: getMediaMeta(vn),
+      type: 'video',
+      ch: 5
+    });
+  }
+
+  // Chapter 6: Hoạt Động Ngoại Khóa Thực Tế Đầu Tiên (7 kickoff photos)
+  categorized.ngoaikhoa.forEach(item => {
+    allItems.push({
+      src: getSrc(item.n, false),
+      meta: item.m,
+      type: 'img',
+      ch: 6
     });
   });
 
@@ -1189,10 +1282,17 @@ function startScene(FD) {
     fl.classList.remove('fire');
     void fl.offsetWidth; // force reflow to restart animation
     fl.classList.add('fire');
-    const mi = document.getElementById('mimg'), mv = document.getElementById('mvid');
+    const mi = document.getElementById('mimg'), mv = document.getElementById('mvid'), vl = document.getElementById('vloader');
     mi.style.display='none'; mv.style.display='none'; mv.pause();
+    if(vl) { vl.style.display='none'; const vt = vl.querySelector('.v-text'); if(vt) vt.innerText = 'Đang tải luồng video HD...'; }
     if(fd.type === 'video') {
-      mv.src = fd.src; mv.style.display='block'; mv.play();
+      if(vl) vl.style.display='flex';
+      mv.src = fd.src; 
+      mv.style.display='block'; 
+      const p = mv.play();
+      if(p !== undefined) {
+        p.then(() => { if(vl) vl.style.display = 'none'; }).catch(() => { if(vl) vl.style.display = 'none'; });
+      }
     } else {
       mi.src = fd.src; mi.style.display='block';
     }
@@ -1203,15 +1303,17 @@ function startScene(FD) {
     // Gen Z Holographic Stats Pills
     const mstats = document.getElementById('mstats');
     if(fd.type === 'video') {
-      mstats.innerHTML = '<span class="stat-pill">★ CHẤT LƯỢNG: 4K 60FPS</span><span class="stat-pill">⚡ ĐỘ SỐNG ĐỘNG: 100%</span><span class="stat-pill">🎬 THỂ LOẠI: CINEMATIC</span>';
+      mstats.innerHTML = '<span class="stat-pill">★ CHẤT LƯỢNG: 4K 60FPS</span><span class="stat-pill">⚡ ĐỘ SỐNG ĐỘNG: 100%</span><span class="stat-pill">🎬 THƯỚC PHIM ĐỘNG</span>';
     } else if(fd.meta.cat === 'achievement') {
       mstats.innerHTML = '<span class="stat-pill">🏆 HỌC LỰC: XUẤT SẮC</span><span class="stat-pill">⚔️ CHIẾN THẦN HỌC TẬP</span><span class="stat-pill">★ RANK: TOP TIER A12</span>';
     } else if(fd.meta.cat === 'trungthu') {
       mstats.innerHTML = '<span class="stat-pill">🏮 ĐÊM HỘI: TRĂNG RẰM</span><span class="stat-pill">✨ PHÁ CỖ: 100% VUI</span><span class="stat-pill">❤️ ĐẠI GIA ĐÌNH A12</span>';
     } else if(fd.meta.cat === 'vannghe') {
       mstats.innerHTML = '<span class="stat-pill">🎤 SÂN KHẤU: BÙNG NỔ</span><span class="stat-pill">⚡ ĐỘ CHÁY: 1000°C</span><span class="stat-pill">🌟 NGHỆ SĨ A12</span>';
-    } else if(fd.meta.cat === 'lienhoan' || fd.meta.cat === 'study') {
-      mstats.innerHTML = '<span class="stat-pill">🍗 SỨC CHIẾN ĐẤU: 999/100</span><span class="stat-pill">🔥 ĐỘ ĐOÀN KẾT: VÔ CỰC</span><span class="stat-pill">🍖 DỰ TOÁN: SẠCH ĐĨA</span>';
+    } else if(fd.meta.cat === 'lienhoan') {
+      mstats.innerHTML = '<span class="stat-pill">🍗 LIÊN HOAN: GIỮA KỲ</span><span class="stat-pill">🔥 ĐỘ ĐOÀN KẾT: VÔ CỰC</span><span class="stat-pill">🍖 DỰ TOÁN: SẠCH ĐĨA</span>';
+    } else if(fd.meta.cat === 'study' || fd.meta.cat === 'dining') {
+      mstats.innerHTML = '<span class="stat-pill">🍗 SỨC CHIẾN ĐẤU: 999/100</span><span class="stat-pill">🔥 OÁNH CHÉN: 100%</span><span class="stat-pill">🌿 DÃ NGOẠI LAM KINH</span>';
     } else if(fd.meta.cat === 'ngoaikhoa') {
       mstats.innerHTML = '<span class="stat-pill">🌲 TRẢI NGHIỆM: THỰC TẾ</span><span class="stat-pill">🤝 ĐỒNG ĐỘI: VỮNG BƯỚC</span><span class="stat-pill">🧭 KỸ NĂNG: XUẤT SẮC</span>';
     } else {
@@ -1220,6 +1322,19 @@ function startScene(FD) {
 
     document.getElementById('modal').classList.add('open');
   };
+
+  const mvInit = document.getElementById('mvid');
+  const vlInit = document.getElementById('vloader');
+  if(mvInit && vlInit) {
+    mvInit.addEventListener('waiting', () => { vlInit.style.display = 'flex'; });
+    mvInit.addEventListener('canplay', () => { vlInit.style.display = 'none'; });
+    mvInit.addEventListener('playing', () => { vlInit.style.display = 'none'; });
+    mvInit.addEventListener('error', () => {
+      vlInit.style.display = 'flex';
+      const vt = vlInit.querySelector('.v-text');
+      if(vt) vt.innerText = 'Đang tải lại luồng video...';
+    });
+  }
 
   let curFdList = FD;
   let curFdIdx = 0;
@@ -1254,6 +1369,8 @@ function startScene(FD) {
   window.closeM = () => { 
     document.getElementById('modal').classList.remove('open'); 
     const mv = document.getElementById('mvid');
+    const vl = document.getElementById('vloader');
+    if(vl) vl.style.display = 'none';
     mv.pause();
     mv.removeAttribute('src'); // free video buffer memory immediately
     mv.load();
@@ -1561,21 +1678,72 @@ function renderGrid() {
   };
 
   const sections = [
-    { id:'trungthu', title:'Đêm Hội Trung Thu 2026', sub:'Rước đèn, phá cỗ rộn rã tiếng cười của đại gia đình A12', arr: IMGS.filter(n=>getMediaMeta(n).cat==='trungthu').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
-    { id:'vannghe', title:'Hội Diễn Văn Nghệ 2026', sub:'Sân khấu bùng nổ đam mê — Cháy hết mình cùng A12', arr: IMGS.filter(n=>getMediaMeta(n).cat==='vannghe').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
-    { id:'lienhoan', title:'Tiệc Liên Hoan Giữa Kỳ 2026', sub:'Oánh chén tưng bừng, nạp năng lượng sau những giờ học căng thẳng', arr: IMGS.filter(n=>getMediaMeta(n).cat==='lienhoan').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
-    { id:'ngoaikhoa', title:'Hoạt Động Ngoại Khóa Thực Tế 2026', sub:'Học tập thực tế, trải nghiệm và rèn luyện kỹ năng sống', arr: IMGS.filter(n=>getMediaMeta(n).cat==='ngoaikhoa').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
-    { id:'cap', title:'Thước Phim Thanh Xuân (Video 4K)', sub:'Kho 30 phim sống động ghi lại từng nụ cười rực rỡ', arr: VIDS.map(n => ({src:getSecSrc(n,true), m:getMediaMeta(n), t:'video'})) },
-    { id:'trip', title:'Hồi Ức & Chuyến Đi', sub:'Những bước chân kỷ niệm đầu tiên tại Lam Kinh', arr: IMGS.filter(n=>getMediaMeta(n).cat==='trip'||getMediaMeta(n).cat==='general').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
-    { id:'study', title:'Say Mê Oánh Chén Sau Team Building', sub:'Có thực mới vực được đạo', arr: IMGS.filter(n=>getMediaMeta(n).cat==='study').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
-    { id:'dining', title:'Gắn Kết & Bạn Bè', sub:'Tình bạn kết tinh qua từng bữa ăn', arr: IMGS.filter(n=>getMediaMeta(n).cat==='dining'||getMediaMeta(n).cat==='portrait').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})) },
-    { id:'achievement', title:'Tặng Thưởng Cuối Học Kỳ II Lớp 10', sub:'Vinh danh thành tích học tập vượt bậc của lớp A12 kết thúc năm 2026', arr: IMGS.filter(n=>getMediaMeta(n).cat==='achievement').map(n=>({src:n, m:getMediaMeta(n), t:'img'})) }
+    { 
+      id: 'trungthu', 
+      title: 'Đêm Hội Trung Thu 2026', 
+      sub: 'MỚI NHẤT // Rước đèn, phá cỗ rộn rã tiếng cười của đại gia đình A12 • 1 Ảnh HD & 11 Video 4K',
+      badge: '🏮 SỰ KIỆN MỚI NHẤT',
+      tagClass: 'gold',
+      arr: [
+        ...IMGS.filter(n=>getMediaMeta(n).cat==='trungthu').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})),
+        ...VIDS.filter(n=>n.includes('09_Trung Thu')).map(n=>({src:getSecSrc(n,true), m:getMediaMeta(n), t:'video'}))
+      ]
+    },
+    { 
+      id: 'vannghe', 
+      title: 'Hội Diễn Văn Nghệ 2026', 
+      sub: 'Sân khấu bùng nổ nhiệt huyết — Cháy hết mình cùng A12 • 4 Ảnh HD & 2 Video Sân Khấu',
+      badge: '🎤 SÂN KHẤU TRƯỜNG',
+      tagClass: '',
+      arr: [
+        ...IMGS.filter(n=>getMediaMeta(n).cat==='vannghe').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})),
+        ...VIDS.filter(n=>n.includes('10_ Van Nghe')||n.includes('10_van nghe')).map(n=>({src:getSecSrc(n,true), m:getMediaMeta(n), t:'video'}))
+      ]
+    },
+    { 
+      id: 'achievement', 
+      title: 'Tặng Thưởng Cuối Học Kỳ II Lớp 10', 
+      sub: 'Vinh danh thành tích học tập xuất sắc và nỗ lực bền bỉ của lớp A12 kết thúc năm 2026 • 38 Bảng Vàng',
+      badge: '🏆 BẢNG VÀNG DANH DỰ',
+      tagClass: 'gold',
+      arr: IMGS.filter(n=>getMediaMeta(n).cat==='achievement').map(n=>({src:n, m:getMediaMeta(n), t:'img'}))
+    },
+    { 
+      id: 'lienhoan', 
+      title: 'Đại Tiệc Liên Hoan Giữa Kỳ 2026', 
+      sub: 'Oánh chén tưng bừng, nạp năng lượng sau những giờ học căng thẳng • 14 Khoảnh Khắc',
+      badge: '🍗 GẮN KẾT BẰNG HỮU',
+      tagClass: '',
+      arr: IMGS.filter(n=>getMediaMeta(n).cat==='lienhoan').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'}))
+    },
+    { 
+      id: 'lamkinh', 
+      title: 'Hành Trình Lam Kinh & Dã Ngoại Kỷ Niệm', 
+      sub: 'Dấu chân thanh xuân, gắn kết bạn bè bên di tích lịch sử • 59 Ảnh Kỷ Niệm & 17 Thước Phim Đáng Nhớ',
+      badge: '🌿 DÃ NGOẠI KỶ NIỆM',
+      tagClass: 'cyan',
+      arr: [
+        ...IMGS.filter(n=>['trip','dining','study','portrait','general'].includes(getMediaMeta(n).cat)).map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'})),
+        ...VIDS.filter(n=>!n.includes('09_Trung Thu') && !n.includes('10_ Van Nghe') && !n.includes('10_van nghe')).map(n=>({src:getSecSrc(n,true), m:getMediaMeta(n), t:'video'}))
+      ]
+    },
+    { 
+      id: 'ngoaikhoa', 
+      title: 'Hoạt Động Ngoại Khóa Thực Tế Đầu Tiên', 
+      sub: 'Những ngày đầu hội tụ: Học tập thực tế, trải nghiệm và rèn luyện kỹ năng • 7 Ảnh HD',
+      badge: '🌲 KHỞI ĐẦU HÀNH TRÌNH',
+      tagClass: 'cyan',
+      arr: IMGS.filter(n=>getMediaMeta(n).cat==='ngoaikhoa').map(n=>({src:getSecSrc(n,false), m:getMediaMeta(n), t:'img'}))
+    }
   ];
 
   sections.forEach(sec => {
     if(sec.arr.length === 0) return;
     html += `<div class="gv-ch">
-      <div class="gv-tit">${sec.title}</div>
+      <div class="gv-tit-wrap">
+        <div class="gv-tit">${sec.title}</div>
+        <div class="gv-event-tag ${sec.tagClass || ''}">${sec.badge}</div>
+      </div>
       <div class="gv-sub">${sec.sub}</div>
       <div class="gv-grid">`;
     const secList = sec.arr.map(it => ({src: it.src, type: it.t, meta: it.m}));
@@ -1583,24 +1751,35 @@ function renderGrid() {
       let stickerHtml = '';
       if(sec.id === 'achievement' && idx % 3 === 0) {
         stickerHtml = '<div class="gv-sticker stk-gold">★ TOP TIER A12 ★</div>';
-      } else if((sec.id === 'study' || sec.id === 'lienhoan') && idx % 2 === 0) {
+      } else if(sec.id === 'achievement' && idx % 3 === 1) {
+        stickerHtml = '<div class="gv-sticker stk-gold">🏆 CHIẾN THẦN</div>';
+      } else if(sec.id === 'lienhoan' && idx % 2 === 0) {
         stickerHtml = '<div class="gv-sticker stk-tape">OÁNH CHÉN 100%</div>';
+      } else if(sec.id === 'trungthu' && item.t === 'video') {
+        stickerHtml = '<div class="gv-sticker stk-gold">🏮 CLIP PHÁ CỖ</div>';
       } else if(sec.id === 'trungthu') {
         stickerHtml = '<div class="gv-sticker stk-gold">🏮 TRUNG THU VUI</div>';
+      } else if(sec.id === 'vannghe' && item.t === 'video') {
+        stickerHtml = '<div class="gv-sticker stk-hype">⚡ LIVE STAGE</div>';
       } else if(sec.id === 'vannghe') {
-        stickerHtml = '<div class="gv-sticker stk-hype">⚡ CHÁY 1000°C</div>';
-      } else if(sec.id === 'ngoaikhoa') {
+        stickerHtml = '<div class="gv-sticker stk-hype">🎤 NGHỆ SĨ A12</div>';
+      } else if(sec.id === 'ngoaikhoa' && idx % 2 === 0) {
         stickerHtml = '<div class="gv-sticker stk-cyan">🌲 NGOẠI KHÓA A12</div>';
-      } else if(sec.id === 'trip' && idx % 4 === 1) {
+      } else if(sec.id === 'lamkinh' && item.t === 'video') {
+        stickerHtml = '<div class="gv-sticker stk-tape">🎬 THƯỚC PHIM 4K</div>';
+      } else if(sec.id === 'lamkinh' && idx % 4 === 1) {
         stickerHtml = '<div class="gv-sticker stk-hype">VERIFIED A12</div>';
       } else if(idx % 5 === 2) {
         stickerHtml = '<div class="gv-sticker stk-cyan">LEGEND 2026</div>';
       }
       html += `<div class="gv-item" onclick="openGridM(${sec.id}_list, ${idx})">`;
       if(item.t==='video') {
-         html += `<video src="${item.src}" preload="none" playsinline muted loop onmouseover="this.play()" onmouseout="this.pause()"></video><div class="gv-ibadge">▶ Video</div>`;
+         html += `<video src="${item.src}" preload="none" playsinline muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+         <div class="gv-ibadge video-badge">▶ Video 4K</div>
+         <div class="gv-play-hint"><div class="gv-play-icon">▶</div></div>`;
       } else {
-         html += `<img loading="lazy" src="${item.src}">`;
+         html += `<img loading="lazy" src="${item.src}">
+         <div class="gv-ibadge img-badge">📷 Ảnh HD</div>`;
       }
       html += stickerHtml + `</div>`;
     });
